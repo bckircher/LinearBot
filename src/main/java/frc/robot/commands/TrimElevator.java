@@ -1,0 +1,53 @@
+// Copyright (c) 2021 FRC Team 2881 - The Lady Cans
+// Open Source Software; you can modify and/or share it under the terms of BSD
+// license file in the root directory of this project.
+
+package frc.robot.commands;
+
+import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Elevator;
+import frc.robot.utils.Logging;
+
+public class TrimElevator extends CommandBase {
+  Elevator m_elevator;
+  DoubleSupplier m_left;
+  DoubleSupplier m_right;
+
+  /** Creates a new TrimElevator. */
+  public TrimElevator(Elevator elevator, DoubleSupplier left,
+                      DoubleSupplier right) {
+    m_elevator = elevator;
+    m_left = left;
+    m_right = right;
+
+    addRequirements(m_elevator);
+  }
+
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+    Logging.logInit(this.toString());
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    m_elevator.run(m_left.getAsDouble() / 4.0, m_right.getAsDouble() / 4.0);
+  }
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+    Logging.logEnd(this.toString(), interrupted);
+    m_elevator.run(0, 0);
+    m_elevator.resetEncoders();
+  }
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return false;
+  }
+}
