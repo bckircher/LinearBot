@@ -102,6 +102,12 @@ public final class Constants {
      * elevator.
      */
     public static final int kMotorRight = 6;
+
+    /**
+     * The kP value for the P-controller used by the right side of the elevator
+     * to track the left side of the elevator.
+     */
+    public static final double kP = 0.01;
   }
 
   /**
@@ -127,6 +133,11 @@ public final class Constants {
      * The current limit on the intake motor.
      */
     public static final double kMaxCurrent = 10.0;
+
+    /**
+     * The kP value for the P-controller used by the current control loop.
+     */
+    public static final double kP = 0.1;
   }
 
   /**

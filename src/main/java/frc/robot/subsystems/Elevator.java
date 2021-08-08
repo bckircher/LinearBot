@@ -53,13 +53,21 @@ public class Elevator extends SubsystemBase {
   }
 
   public void run(double speed) {
-    double delta = m_rightPos.getPosition() - m_leftPos.getPosition();
+    double delta = m_leftPos.getPosition() - m_rightPos.getPosition();
   
+    if(Math.abs(speed) > 0.5) {
+      if(speed < 0) {
+        speed = -0.5;
+      } else {
+        speed = 0.5;
+      }
+    }
+
     m_left.set(speed);
     if((speed == 0) && (Math.abs(delta) < 10)) {
       m_right.set(0);
     } else {
-      m_right.set(speed + (delta * 0.01));
+      m_right.set(speed + (delta * Constants.Elevator.kP));
     }
   }
 

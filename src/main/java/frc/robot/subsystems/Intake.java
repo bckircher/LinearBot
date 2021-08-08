@@ -12,9 +12,8 @@ import frc.robot.Constants;
 import frc.robot.utils.frc4048.Logging;
 
 public class Intake extends SubsystemBase {
-  private static final double kP = 0.9;
-  private PowerDistributionPanel m_pdp;
   private Spark m_intake = new Spark(Constants.Intake.kMotor);
+  private PowerDistributionPanel m_pdp;
   private double m_target;
   private double m_speed;
   private boolean m_useLoop = false;
@@ -25,6 +24,8 @@ public class Intake extends SubsystemBase {
       protected void addAll() {
         add("Intake Applied Voltage", m_intake.getSpeed());
         add("Intake Current", m_pdp.getCurrent(Constants.PDP.kIntake));
+        add("Intake Target", m_target);
+        add("Intake Speed", m_speed);
       }
     };
 
@@ -50,7 +51,7 @@ public class Intake extends SubsystemBase {
     error = (Constants.Intake.kMaxCurrent -
              m_pdp.getCurrent(Constants.PDP.kIntake));
 
-    speed = m_speed + Math.copySign(error * kP, m_target);
+    speed = m_speed + Math.copySign(error * Constants.Intake.kP, m_target);
     if(Math.abs(speed) > Math.abs(m_target)) {
       speed = m_target;
     }
