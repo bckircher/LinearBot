@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.utils.frc4048.Logging;
 
 public class Drive extends SubsystemBase {
   CANSparkMax m_leftFront = new CANSparkMax(Constants.Drive.kMotorLeftFront,
@@ -23,6 +24,21 @@ public class Drive extends SubsystemBase {
                                             MotorType.kBrushless);
 
   DifferentialDrive m_drive = new DifferentialDrive(m_leftFront, m_rightFront);
+
+  public Logging.LoggingContext loggingContext =
+    new Logging.LoggingContext(this.getClass()) {
+      @Override
+      protected void addAll() {
+        add("Left Front Applied Voltage", m_leftFront.getAppliedOutput());
+        add("Left Front Current", m_leftFront.getOutputCurrent());
+        add("Left Back Applied Voltage", m_leftBack.getAppliedOutput());
+        add("Left Back Current", m_leftBack.getOutputCurrent());
+        add("Right Front Applied Voltage", m_rightFront.getAppliedOutput());
+        add("Right Front Current", m_rightFront.getOutputCurrent());
+        add("Right Back Applied Voltage", m_rightBack.getAppliedOutput());
+        add("Right Back Current", m_rightBack.getOutputCurrent());
+      }
+    };
 
   /** Creates a new Drive. */
   public Drive() {
@@ -41,6 +57,11 @@ public class Drive extends SubsystemBase {
     m_rightBack.setIdleMode(IdleMode.kBrake);
   
     m_rightBack.follow(m_rightFront);
+
+    m_drive.setSafetyEnabled(true);
+    m_drive.setExpiration(0.1);
+
+    addChild("Differential Drive", m_drive);
   }
 
   @Override

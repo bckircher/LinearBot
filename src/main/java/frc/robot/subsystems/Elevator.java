@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.utils.frc4048.Logging;
 
 public class Elevator extends SubsystemBase {
   CANSparkMax m_left = new CANSparkMax(Constants.Elevator.kMotorLeft,
@@ -20,6 +21,19 @@ public class Elevator extends SubsystemBase {
 
   CANEncoder m_leftPos = m_left.getEncoder();
   CANEncoder m_rightPos = m_right.getEncoder();
+
+  public Logging.LoggingContext loggingContext =
+    new Logging.LoggingContext(this.getClass()) {
+      @Override
+      protected void addAll() {
+        add("Left Elevator Applied Voltage", m_left.getAppliedOutput());
+        add("Left Elevator Current", m_left.getOutputCurrent());
+        add("Left Elevator Position", m_leftPos.getPosition());
+        add("Right Elevator Applied Voltage", m_right.getAppliedOutput());
+        add("Right Elevator Current", m_right.getOutputCurrent());
+        add("Right Elevator Position", m_rightPos.getPosition());
+      }
+    };
 
   /** Creates a new Elevator. */
   public Elevator() {

@@ -10,10 +10,20 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.utils.frc4048.Logging;
 
 public class HDrive extends SubsystemBase {
   CANSparkMax m_drive = new CANSparkMax(Constants.HDrive.kMotor,
                                         MotorType.kBrushless);
+
+  public Logging.LoggingContext loggingContext =
+    new Logging.LoggingContext(this.getClass()) {
+      @Override
+      protected void addAll() {
+        add("HDrive Applied Voltage", m_drive.getAppliedOutput());
+        add("HDrive Current", m_drive.getOutputCurrent());
+      }
+    };
 
   /** Creates a new HDrive. */
   public HDrive() {

@@ -20,3 +20,7 @@ This project contains the code to drive the 2019/2020/2021 linear elevator
   hatch panels being handled by swapping the controls)
 
 * Left joystick Y -> elevator up/down
+
+* While L1 is held -> left joystick Y controls the left side of the elevator
+                      and right joystick Y controls the right side of the
+                      elevator for manual leveling

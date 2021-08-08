@@ -8,12 +8,12 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
-import frc.robot.utils.Logging;
+import frc.robot.utils.Log;
 
 /**
- * This is intended to be used as the default command for the Drive subsystem.
- * It takes values from the given DoubleSuppliers (obstensibly a stick on a
- * controller) and uses their values to directly drive the robot.
+ * This is intended to be used as the default command for the {@link Drive}
+ * subsystem. It takes values from the given DoubleSuppliers (obstensibly a
+ * stick on a controller) and uses their values to directly drive the robot.
  */
 public class DriveWithJoysticks extends CommandBase {
   Drive m_drive;
@@ -23,7 +23,12 @@ public class DriveWithJoysticks extends CommandBase {
   /**
    * Creates an instance of this class.
    *
-   * @param drive is the Drive subsystem to use.
+   * <p>This is intended to be used as the default command for the {@link
+   * Drive} subsystem. It takes values from the given DoubleSuppliers
+   * (obstensibly a stick on a controller) and uses their values to directly
+   * drive the robot.
+   *
+   * @param drive is the {@link Drive} subsystem to use.
    *
    * @param speed is the DoubleSupplier used to query the speed and direction
    *              in which the robot should move.
@@ -43,7 +48,7 @@ public class DriveWithJoysticks extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Logging.logInit(this.getClass().getSimpleName());
+    Log.init(this);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -55,7 +60,7 @@ public class DriveWithJoysticks extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Logging.logEnd(this.getClass().getSimpleName(), interrupted);
+    Log.end(this, interrupted);
     m_drive.driveArcade(0, 0);
   }
 

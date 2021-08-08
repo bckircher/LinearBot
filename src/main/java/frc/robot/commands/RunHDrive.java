@@ -8,23 +8,27 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.HDrive;
-import frc.robot.utils.Logging;
+import frc.robot.utils.Log;
 
 /**
- * This is intended to be used as the default command for the HDrive subsystem.
- * It takes values from the given DoubleSupplier (obstensibly a stick on a
- * controller) and uses their values to directly drive the robot.
+ * This is intended to be used as the default command for the {@link HDrive}
+ * subsystem. It takes values from the given DoubleSupplier (obstensibly a
+ * stick on a controller) and uses their values to directly drive the robot.
  */
 public class RunHDrive extends CommandBase {
   HDrive m_hdrive;
   DoubleSupplier m_left;
   DoubleSupplier m_right;
 
-  /** Creates a new RunHDrive. */
   /**
    * Creates an instance of this class.
    *
-   * @param hdrive is the HDrive subsystem to use.
+   * <p>This is intended to be used as the default command for the {@link
+   * HDrive} subsystem. It takes values from the given DoubleSupplier
+   * (obstensibly a stick on a controller) and uses their values to directly
+   * drive the robot.
+   *
+   * @param hdrive is the {@link HDrive} subsystem to use.
    *
    * @param left is the DoubleSupplier used to get the speed to move to the
    *             left.
@@ -43,7 +47,7 @@ public class RunHDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Logging.logInit(this.getClass().getSimpleName());
+    Log.init(this);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -64,7 +68,7 @@ public class RunHDrive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Logging.logEnd(this.getClass().getSimpleName(), interrupted);
+    Log.end(this, interrupted);
     m_hdrive.run(0);
   }
 

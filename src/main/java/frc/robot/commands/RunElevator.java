@@ -8,10 +8,10 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
-import frc.robot.utils.Logging;
+import frc.robot.utils.Log;
 
 /**
- * This is intended to be used as the default command for the Elevator
+ * This is intended to be used as the default command for the {@link Elevator}
  * subsystem. It takes values from the given DoubleSupplier (obstensibly a
  * stick on a controller) and uses its value to directly move the elevator.
  */
@@ -21,9 +21,16 @@ public class RunElevator extends CommandBase {
 
   /**
    * Creates an instance of this class.
-   * @param elevator is the Elevator subsystem to use.
+   *
+   * <p>This is intended to be used as the default command for the {@link
+   * Elevator} subsystem. It takes values from the given DoubleSupplier
+   * (obstensibly a stick on a controller) and uses its value to directly move
+   * the elevator.
+   *
+   * @param elevator is the {@link Elevator} subsystem to use.
+   *
    * @param speed is the DoubleSupplier used to query the speed and direction
-   * to move the elevator.
+   *              to move the elevator.
    */
   public RunElevator(Elevator elevator, DoubleSupplier speed) {
     m_elevator = elevator;
@@ -35,7 +42,7 @@ public class RunElevator extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Logging.logInit(this.getClass().getSimpleName());
+    Log.init(this);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -47,7 +54,7 @@ public class RunElevator extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Logging.logEnd(this.getClass().getSimpleName(), interrupted);
+    Log.end(this, interrupted);
     m_elevator.run(0);
   }
 

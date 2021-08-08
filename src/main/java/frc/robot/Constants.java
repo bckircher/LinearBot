@@ -12,6 +12,57 @@ package frc.robot;
  */
 public final class Constants {
   /**
+   * The channel allocations on the PDP (Power Distribution Panel).
+   */
+  public static final class PDP {
+    /**
+     * The PDP channel that powers the front left motor of the {@link Drive}
+     * subsystem.
+     */
+    public static final int kDriveLeftFront = 1;
+    
+    /**
+     * The PDP channel that powers the back left motor of the {@link Drive}
+     * subsystem.
+     */
+    public static final int kDriveLeftBack = 2;
+
+    /**
+     * The PDP channel that powers the front right motor of the {@link Drive}
+     * subsystem.
+     */
+    public static final int kDriveRightFront = 3;
+
+    /**
+     * The PDP channel that powers the back right motor of the {@link Drive}
+     * subsystem.
+     */
+    public static final int kDriveRightBack = 4;
+
+    /**
+     * The PDP channel that powers the left motor of the {@link Elevator}
+     * subsystem.
+     */
+    public static final int kElevatorLeft = 5;
+
+    /**
+     * The PDP channel that powers the right motor of the {@link Elevator}
+     * subsystem.
+     */
+    public static final int kElevatorRight = 6;
+
+    /**
+     * The PDP channel that powers the motor of the {@link HDrive} subsystem.
+     */
+    public static final int kHDrive = 7;
+
+    /**
+     * The PDP channel that powers the motor of the {@link Intake} subsystem.
+     */
+    public static final int kIntake = 8;
+  }
+
+  /**
    * The constants for the Drive subsystem.
    */
   public static final class Drive {
@@ -71,6 +122,11 @@ public final class Constants {
      * The PWM channel of the Spark controller that drives the intake.
      */
     public static final int kMotor = 0;
+
+    /**
+     * The current limit on the intake motor.
+     */
+    public static final double kMaxCurrent = 10.0;
   }
 
   /**
@@ -127,74 +183,74 @@ public final class Constants {
     /**
      * The index of the pink square button on the controller.
      */
-    public final static int kButtonPinkSquare = 0;
+    public final static int kButtonPinkSquare = 1;
 
     /**
      * The index of the blue X button on the controller.
      */
-    public final static int kButtonBlueX = 1;
+    public final static int kButtonBlueX = 2;
 
     /**
      * The index of the red circle button on the controller.
      */
-    public final static int kButtonRedCircle = 2;
+    public final static int kButtonRedCircle = 3;
 
     /**
      * The index of the green triangle button on the controller.
      */
-    public final static int kButtonGreenTriangle = 3;
+    public final static int kButtonGreenTriangle = 4;
 
     /**
      * The index of the L1 button on the controller.
      */
-    public final static int kButtonLeft1 = 4;
+    public final static int kButtonLeft1 = 5;
 
     /**
      * The index of the R1 button on the controller.
      */
-    public final static int kButtonRight1 = 5;
+    public final static int kButtonRight1 = 6;
 
     /**
      * The index of the L2 button on the controller.
      */
-    public final static int kButtonLeft2 = 6;
+    public final static int kButtonLeft2 = 7;
 
     /**
      * The index of the R2 button on the controller.
      */
-    public final static int kButtonRight2 = 7;
+    public final static int kButtonRight2 = 8;
 
     /**
      * The index of the share button on the controller.
      */
-    public final static int kButtonShare = 8;
+    public final static int kButtonShare = 9;
 
     /**
      * The index of the options button on the controller.
      */
-    public final static int kButtonOptions = 9;
+    public final static int kButtonOptions = 10;
 
     /**
      * The index of the L3 button (pressing down on the left stick) on the
      * controller.
      */
-    public final static int kButtonLeft3 = 10;
+    public final static int kButtonLeft3 = 11;
 
     /**
      * The index of the R3 button (pressing down on the right stick) on the
      * controller.
      */
-    public final static int kButtonRight3 = 11;
+    public final static int kButtonRight3 = 12;
 
     /**
      * The index of the home button on the controller.
      */
-    public final static int kButtonHome = 12;
+    public final static int kButtonHome = 13;
 
     /**
      * The index of the touchpad button on the controller.
      */
-    public final static int kButtonTouchpad = 13;
+    public final static int kButtonTouchpad = 14;
 
     /**
      * The amount of deadband to apply to the analog controls.

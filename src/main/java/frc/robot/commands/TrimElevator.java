@@ -8,14 +8,31 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
-import frc.robot.utils.Logging;
+import frc.robot.utils.Log;
 
+/**
+ * This command allows each side of the {@link Elevator} to be run manually,
+ * allowing it to be put back into a level condition.
+ */
 public class TrimElevator extends CommandBase {
   Elevator m_elevator;
   DoubleSupplier m_left;
   DoubleSupplier m_right;
 
-  /** Creates a new TrimElevator. */
+  /**
+   * Creates an instance of this class.
+   *
+   * <p>This command allows each side of the {@link Elevator} to be run
+   * manually, allowing it to be put back into a level condition.
+   *
+   * @param elevator is the {@link Elevator} subsystem to use.
+   *
+   * @param left is the DoubleSupplier used to query the speed and direction
+   *             of the left side of the elevator.
+   *
+   * @param right is the DoubleSupplier used to query the speed and direction
+   *              of the right side of the elevator.
+   */
   public TrimElevator(Elevator elevator, DoubleSupplier left,
                       DoubleSupplier right) {
     m_elevator = elevator;
@@ -28,7 +45,7 @@ public class TrimElevator extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Logging.logInit(this.getClass().getSimpleName());
+    Log.init(this);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -40,7 +57,7 @@ public class TrimElevator extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Logging.logEnd(this.getClass().getSimpleName(), interrupted);
+    Log.end(this, interrupted);
     m_elevator.run(0, 0);
     m_elevator.resetEncoders();
   }

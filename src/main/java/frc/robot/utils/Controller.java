@@ -12,7 +12,7 @@ import frc.robot.Constants;
  * This class provides methods for getting values from the controllers,
  * utilizing some signal conditioning to clean up the results.
  */
-public final class Controls {
+public final class Controller {
   private static double m_deadband = 0;
 
   /**
