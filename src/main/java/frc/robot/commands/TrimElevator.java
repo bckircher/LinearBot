@@ -28,7 +28,7 @@ public class TrimElevator extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Logging.logInit(this.toString());
+    Logging.logInit(this.getClass().getSimpleName());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -40,7 +40,7 @@ public class TrimElevator extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Logging.logEnd(this.toString(), interrupted);
+    Logging.logEnd(this.getClass().getSimpleName(), interrupted);
     m_elevator.run(0, 0);
     m_elevator.resetEncoders();
   }

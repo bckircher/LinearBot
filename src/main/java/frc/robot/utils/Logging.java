@@ -21,15 +21,16 @@ public final class Logging {
    */
   public static void log(String message) {
     long time = System.currentTimeMillis() - startTime;
-    System.out.printf("[%6.%02f] %s\n", time, message);
+    System.out.printf("[%6.2f] %s\n", time / 1000.0, message);
   }
 
   /**
    * Logs the start of the robot code.
    */
   public static void logStart() {
-    log("***** Code Start, version " + "blah" + " *****");
-  }
+    log("***** Robot Start, version " +
+    Logging.class.getPackage().getImplementationVersion() + " *****");
+}
 
   /**
    * Logs a change in the robot mode.
