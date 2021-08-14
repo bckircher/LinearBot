@@ -32,7 +32,7 @@ import frc.robot.utils.Controller;
  * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  private final PowerDistributionPanel m_pdp = new PowerDistributionPanel(10);
+  private final PowerDistributionPanel m_pdp = new PowerDistributionPanel(11);
   private final Drive m_drive = new Drive();
   private final Elevator m_elevator = new Elevator();
   private final HDrive m_hdrive = new HDrive();
@@ -110,9 +110,9 @@ public class RobotContainer {
                        Constants.Controller.kButtonLeft1).
       whileHeld(new TrimElevator(m_elevator,
                                  () -> Controller.
-                                         getLeftX(m_manipulatorJoystick),
+                                         getLeftY(m_manipulatorJoystick),
                                  () -> Controller.
-                                         getRightX(m_manipulatorJoystick)));
+                                         getRightY(m_manipulatorJoystick)));
 
     // Run a command while the driver's POV is set to 90 degrees.
     Controller.newPOVButton(m_driverJoystick, 90).

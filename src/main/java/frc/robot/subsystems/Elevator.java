@@ -64,7 +64,7 @@ public class Elevator extends SubsystemBase {
     }
 
     m_left.set(speed);
-    if((speed == 0) && (Math.abs(delta) < 10)) {
+    if((speed == 0) && (Math.abs(delta) < 1)) {
       m_right.set(0);
     } else {
       m_right.set(speed + (delta * Constants.Elevator.kP));

@@ -107,7 +107,7 @@ public final class Constants {
      * The kP value for the P-controller used by the right side of the elevator
      * to track the left side of the elevator.
      */
-    public static final double kP = 0.01;
+    public static final double kP = 0.1;
   }
 
   /**

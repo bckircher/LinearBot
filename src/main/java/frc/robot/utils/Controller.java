@@ -84,8 +84,8 @@ public final class Controller {
    *         -1 to 1.
    */
   public static double getLeftY(Joystick controller) {
-    return(applyDeadband(controller.getRawAxis(Constants.Controller.
-                                               kAnalogLeftY)));
+    return(applyDeadband(-controller.getRawAxis(Constants.Controller.
+                                                kAnalogLeftY)));
   }
 
   /**
@@ -120,8 +120,8 @@ public final class Controller {
    *         -1 to 1.
    */
   public static double getRightY(Joystick controller) {
-    return(applyDeadband(controller.getRawAxis(Constants.Controller.
-                                               kAnalogRightY)));
+    return(applyDeadband(-controller.getRawAxis(Constants.Controller.
+                                                kAnalogRightY)));
   }
 
   /**
