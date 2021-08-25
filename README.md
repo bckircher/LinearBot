@@ -12,7 +12,9 @@ This project contains the code to drive the 2019/2020/2021 linear elevator
 
 ## Driver
 
-* Left joystick X and right joystick Y -> split arcade drive
+* Left joystick Y and right joystick X -> split arcade drive
+
+* L2/R2 -> strafe left and right
 
 ## Manipulator
 
@@ -23,4 +25,5 @@ This project contains the code to drive the 2019/2020/2021 linear elevator
 
 * While L1 is held -> left joystick Y controls the left side of the elevator
                       and right joystick Y controls the right side of the
-                      elevator for manual leveling
+                      elevator for manual leveling; the encoders are reset when
+                      L1 is released, setting the code's idea of level.

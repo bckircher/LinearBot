@@ -1,4 +1,5 @@
 // Copyright (c) 2021 FRC Team 2881 - The Lady Cans
+//
 // Open Source Software; you can modify and/or share it under the terms of BSD
 // license file in the root directory of this project.
 
@@ -12,21 +13,21 @@ import frc.robot.utils.Log;
 
 /**
  * This is intended to be used as the default command for the {@link Intake}
- * subsystem. It takes values from the given DoubleSuppliers (obstensibly
- * analog buttons on a controller) and uses their values to directly control
- * the intake.
+ * subsystem. It takes values from the given DoubleSuppliers (ostensibly analog
+ * buttons on a controller) and uses their values to directly control the
+ * intake.
  */
 public class RunIntake extends CommandBase {
-  Intake m_intake;
-  DoubleSupplier m_in;
-  DoubleSupplier m_out;
+  private final Intake m_intake;
+  private final DoubleSupplier m_in;
+  private final DoubleSupplier m_out;
 
   /**
-   * Creates an instance of this class.
+   * This command runs the intake based on driver control.
    *
    * <p>This is intended to be used as the default command for the {@link
    * Intake}subsystem. It takes values from the given DoubleSuppliers
-   * (obstensibly analog buttons on a controller) and uses their values to
+   * (ostensibly analog buttons on a controller) and uses their values to
    * directly control the intake.
    * 
    * <p>The intake subsystem is rather unique. Running the motor one direction
@@ -71,7 +72,7 @@ public class RunIntake extends CommandBase {
     } else if((out == 0.0) && (in > 0.0)) {
       m_intake.run(-in);
     } else {
-      m_intake.run(0);
+      m_intake.stop();
     }
   }
 
@@ -79,7 +80,7 @@ public class RunIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     Log.end(this, interrupted);
-    m_intake.run(0);
+    m_intake.stop();
   }
 
   // Returns true when the command should end.

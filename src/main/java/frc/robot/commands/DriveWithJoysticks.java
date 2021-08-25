@@ -1,4 +1,5 @@
 // Copyright (c) 2021 FRC Team 2881 - The Lady Cans
+//
 // Open Source Software; you can modify and/or share it under the terms of BSD
 // license file in the root directory of this project.
 
@@ -12,20 +13,20 @@ import frc.robot.utils.Log;
 
 /**
  * This is intended to be used as the default command for the {@link Drive}
- * subsystem. It takes values from the given DoubleSuppliers (obstensibly a
+ * subsystem. It takes values from the given DoubleSuppliers (ostensibly a
  * stick on a controller) and uses their values to directly drive the robot.
  */
 public class DriveWithJoysticks extends CommandBase {
-  Drive m_drive;
-  DoubleSupplier m_speed;
-  DoubleSupplier m_rotation;
+  private final Drive m_drive;
+  private final DoubleSupplier m_speed;
+  private final DoubleSupplier m_rotation;
 
   /**
-   * Creates an instance of this class.
+   * This command runs the robot based on driver control.
    *
    * <p>This is intended to be used as the default command for the {@link
    * Drive} subsystem. It takes values from the given DoubleSuppliers
-   * (obstensibly a stick on a controller) and uses their values to directly
+   * (ostensibly a stick on a controller) and uses their values to directly
    * drive the robot.
    *
    * @param drive is the {@link Drive} subsystem to use.
@@ -61,7 +62,7 @@ public class DriveWithJoysticks extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     Log.end(this, interrupted);
-    m_drive.driveArcade(0, 0);
+    m_drive.stop();
   }
 
   // Returns true when the command should end.

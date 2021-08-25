@@ -1,19 +1,32 @@
 // Copyright (c) 2021 FRC Team 2881 - The Lady Cans
+//
 // Open Source Software; you can modify and/or share it under the terms of BSD
 // license file in the root directory of this project.
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.DriveForDistance;
 import frc.robot.commands.DriveWithJoysticks;
+import frc.robot.commands.ElevatorToHeight;
+import frc.robot.commands.FollowTrajectory;
 import frc.robot.commands.RunElevator;
 import frc.robot.commands.RunHDrive;
 import frc.robot.commands.RunIntake;
@@ -23,6 +36,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HDrive;
 import frc.robot.subsystems.Intake;
 import frc.robot.utils.Controller;
+import frc.robot.utils.NavX;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -32,10 +46,11 @@ import frc.robot.utils.Controller;
  * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  private final PowerDistributionPanel m_pdp = new PowerDistributionPanel(11);
-  private final Drive m_drive = new Drive();
+  private final NavX m_navX = new NavX();
+  private final PowerDistributionPanel m_pdp = new PowerDistributionPanel();
+  private final Drive m_drive = new Drive(m_navX);
   private final Elevator m_elevator = new Elevator();
-  private final HDrive m_hdrive = new HDrive();
+  private final HDrive m_hDrive = new HDrive();
   private final Intake m_intake = new Intake(m_pdp);
 
   private final Joystick m_driverJoystick =
@@ -43,14 +58,58 @@ public class RobotContainer {
   private final Joystick m_manipulatorJoystick =
     new Joystick(Constants.Controller.kManipulator);
 
+  private final Trajectory m_trajectory1;
+  private final Trajectory m_trajectory2;
+
+  private final UsbCamera m_camera;
+
   /**
-   *  The container for the robot. Contains subsystems, OI devices, and
+   * The container for the robot. Contains subsystems, OI devices, and
    * commands.
    */
   public RobotContainer() {
-    // Set the deadband to apply to the analog controls.
-    Controller.setDeadband(Constants.Controller.kDeadband);
+    // Load the autonomous trajectories.
+    m_trajectory1 = loadTrajectory("Test1.wpilib.json");
+    m_trajectory2 = loadTrajectory("Test2.wpilib.json");
 
+    // Set the dead-band to apply to the analog controls.
+    Controller.setDeadBand(Constants.Controller.kDeadBand);
+
+    // Publish various items to SmartDashboard.
+    publishToSmartDashboard();
+
+    // Configure the default commands for each subsystem.
+    configureDefaultCommands();
+
+    // Configure the controller buttons.
+    configureButtonBindings();
+
+    // Start streaming the first camera to the driver station.
+    m_camera = CameraServer.getInstance().startAutomaticCapture(0);
+    m_camera.setResolution(640, 480);
+  }
+
+  /**
+   * Load a PathWeaver trajectories from the deploy directory.
+   */
+  private Trajectory loadTrajectory(String json) {
+    Trajectory trajectory;
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().
+                              resolve("output/" + json);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + json,
+                                ex.getStackTrace());
+      return null;
+    }
+    return trajectory;
+  }
+
+  /**
+   * Publishes items to SmartDashboard for use by the drivers/programmers.
+   */
+  private void publishToSmartDashboard() {
     // Publish the state of the scheduler to SmartDashboard.
     SmartDashboard.putData(CommandScheduler.getInstance());
 
@@ -58,12 +117,31 @@ public class RobotContainer {
     SmartDashboard.putData(m_pdp);
     SmartDashboard.putData(m_drive);
     SmartDashboard.putData(m_elevator);
-    SmartDashboard.putData(m_hdrive);
+    SmartDashboard.putData(m_hDrive);
     SmartDashboard.putData(m_intake);
 
     // Add buttons to SmartDashboard to allow commands to be manually run.
-    SmartDashboard.putData("Wait", new WaitCommand(1));
+    SmartDashboard.putData("Drive 5'",
+                           new DriveForDistance(m_drive, m_navX,
+                                                Units.feetToMeters(5), 0.5));
+    SmartDashboard.putData("Elevator 0'", new ElevatorToHeight(m_elevator, 0,
+                                                               0.5));
+    SmartDashboard.putData("Elevator 3'",
+                           new ElevatorToHeight(m_elevator,
+                                                Units.feetToMeters(3), 0.5));
+    SmartDashboard.putData("Elevator 6'",
+                           new ElevatorToHeight(m_elevator,
+                                                Units.feetToMeters(6), 0.5));
+    SmartDashboard.putData("Trajectory 1",
+                           new FollowTrajectory(m_drive, m_trajectory1));
+    SmartDashboard.putData("Trajectory 2",
+                           new FollowTrajectory(m_drive, m_trajectory2));
+  }
 
+  /**
+   * Sets the default commands for each of the subsystems.
+   */
+  private void configureDefaultCommands() {
     // Set the default command for the Drive subsystem.
     m_drive.setDefaultCommand(
       new DriveWithJoysticks(m_drive,
@@ -76,8 +154,8 @@ public class RobotContainer {
                       () -> Controller.getLeftY(m_manipulatorJoystick)));
 
     // Set the default command for the HDrive subsystem.
-    m_hdrive.setDefaultCommand(
-      new RunHDrive(m_hdrive,
+    m_hDrive.setDefaultCommand(
+      new RunHDrive(m_hDrive,
                     () -> Controller.getLeft2(m_driverJoystick),
                     () -> Controller.getRight2(m_driverJoystick)));
 
@@ -86,9 +164,6 @@ public class RobotContainer {
       new RunIntake(m_intake,
                     () -> Controller.getLeft2(m_manipulatorJoystick),
                     () -> Controller.getRight2(m_manipulatorJoystick)));
-
-    // Configure the controller buttons.
-    configureButtonBindings();
   }
 
   /**
@@ -99,10 +174,32 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Run a command while the driver's pink square button is held.
+    // Follow the first trajectory while the driver's pink square is held.
     new JoystickButton(m_driverJoystick,
                        Constants.Controller.kButtonPinkSquare).
-      whileHeld(new WaitCommand(15));
+      whileHeld(new FollowTrajectory(m_drive, m_trajectory1));
+
+    // Follow the second trajectory while the driver's red circle is held.
+    new JoystickButton(m_driverJoystick,
+                       Constants.Controller.kButtonRedCircle).
+      whileHeld(new FollowTrajectory(m_drive, m_trajectory2));
+
+    // Move the elevator to 10" when the manipulator's POV is set to 0 degrees
+    // (in other words, up).
+    Controller.newPOVButton(m_manipulatorJoystick, 0).
+      whileHeld(new ElevatorToHeight(m_elevator, Units.inchesToMeters(10), 0.5,
+                                     true));
+
+    // Move the elevator to 5" when the manipulator's POV is set to 90 degrees
+    // (in other words, to the right).
+    Controller.newPOVButton(m_manipulatorJoystick, 90).
+      whileHeld(new ElevatorToHeight(m_elevator, Units.inchesToMeters(5), 0.5,
+                                     true));
+
+    // Move the elevator to 0" when the manipulator's POV is set to 180 degrees
+    // (in other words, down).
+    Controller.newPOVButton(m_manipulatorJoystick, 180).
+      whileHeld(new ElevatorToHeight(m_elevator, 0, 0.5, true));
 
     // Allow the elevator to be trimmed by the manipulator while the
     // manipulator L1 button is held.
@@ -113,10 +210,6 @@ public class RobotContainer {
                                          getLeftY(m_manipulatorJoystick),
                                  () -> Controller.
                                          getRightY(m_manipulatorJoystick)));
-
-    // Run a command while the driver's POV is set to 90 degrees.
-    Controller.newPOVButton(m_driverJoystick, 90).
-      whileHeld(new WaitCommand(15));
   }
 
   /**
@@ -125,6 +218,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new WaitCommand(15);
+    return null;
   }
 }

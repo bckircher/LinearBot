@@ -1,8 +1,13 @@
 // Copyright (c) 2021 FRC Team 2881 - The Lady Cans
+//
 // Open Source Software; you can modify and/or share it under the terms of BSD
 // license file in the root directory of this project.
 
 package frc.robot;
+
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.util.Units;
+import frc.robot.utils.GearRatio;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -11,6 +16,12 @@ package frc.robot;
  * not put anything functional in this class.
  */
 public final class Constants {
+  /**
+   * The maximum motor temperature allowed before the warning light is turned
+   * on.
+   */
+  public static final double maxMotorTemperature = 50.0;
+
   /**
    * The channel allocations on the PDP (Power Distribution Panel).
    */
@@ -85,6 +96,66 @@ public final class Constants {
      * The CAN ID of hte SparkMAX controller that drives the back right wheel.
      */
     public static final int kMotorRightBack = 4;
+
+    /**
+     * The conversion factor from encoder ticks to distance traveled by the
+     * robot, in meters.
+     */
+    public static final double kEncoderConversion =
+      GearRatio.computeWheel(42, 12, 50, 18, 36, Units.inchesToMeters(6));
+
+    /**
+     * The track width of the robot, in meters.
+     */
+    public static final double kTrackWidth = Units.inchesToMeters(26);
+
+    /**
+     * The kinematics object to convert chassis velocity into wheel speeds.
+     */
+    public static final DifferentialDriveKinematics kKinematics =
+      new DifferentialDriveKinematics(kTrackWidth);
+
+    /**
+     * The amount of power to required to overcome static friction in the drive
+     * train. Determined via frc-characterization.
+     */
+    public static final double kS = 0;
+
+    /**
+     * The amount of power required to maintain a specific velocity. Determined
+     * via frc-characterization.
+     */
+    public static final double kV = 0;
+
+    /**
+     * The amount of power required to achieve a specific acceleration.
+     * Determined via frc-characterization.
+     */
+    public static final double kA = 0;
+
+    /**
+     * The proportional constant for the feedback controller. Determined via
+     * frc-characterization.
+     */
+    public static final double kP = 0;
+
+    /**
+     * The derivative constants for the feedback controller. Determined via
+     * frc-characterization.
+     */
+    public static final double kD = 0;
+
+    /**
+     * The Ramsete trajectory follower Beta constant. This is a reasonable
+     * baseline value.
+     */
+    public static final double kRamseteB = 2.0;
+
+    /**
+     * The Ramsete trajectory follower Zeta constant. This is a reasonable
+     * baseline value.
+     */
+    public static final double kRamseteZeta = 0.7;
   }
 
   /**
@@ -104,6 +175,13 @@ public final class Constants {
     public static final int kMotorRight = 6;
 
     /**
+     * The conversion factor from encoder ticks to distance traveled for the
+     * elevator.
+     */
+    public static final double kEncoderConversion =
+      GearRatio.computeLeadScrew(42, 16, 32, Units.inchesToMeters(1));
+
+    /**
      * The kP value for the P-controller used by the right side of the elevator
      * to track the left side of the elevator.
      */
@@ -111,13 +189,20 @@ public final class Constants {
   }
 
   /**
-   * The constants for the HDrive subsysstem.
+   * The constants for the HDrive subsystem.
    */
   public static final class HDrive {
     /**
      * The CAN ID of the SparkMAX controller that drives the H-drive wheel.
      */
     public static final int kMotor = 7;
+
+    /**
+     * The conversion factor from encoder ticks to distance traveled by the
+     * robot, in meters.
+     */
+    public static final double kEncoderConversion =
+      GearRatio.computeWheel(42, 12, 50, 50, 64, Units.inchesToMeters(4));
   }
 
   /**
@@ -259,13 +344,13 @@ public final class Constants {
     public final static int kButtonHome = 13;
 
     /**
-     * The index of the touchpad button on the controller.
+     * The index of the touch pad button on the controller.
      */
-    public final static int kButtonTouchpad = 14;
+    public final static int kButtonTouchPad = 14;
 
     /**
-     * The amount of deadband to apply to the analog controls.
+     * The amount of dead-band to apply to the analog controls.
      */
-    public static final double kDeadband = 0.05;
+    public static final double kDeadBand = 0.05;
   }
 }

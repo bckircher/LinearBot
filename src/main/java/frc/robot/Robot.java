@@ -22,6 +22,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private static int m_periodicCount = 0;
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -31,7 +33,7 @@ public class Robot extends TimedRobot {
     Log.start();
 
     // Instantiate our RobotContainer.  This will perform all our button
-    // bindings, and put ourautonomous chooser on the dashboard.
+    // bindings, and put our autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
     // Write the subsystem logging titles.
@@ -48,6 +50,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    // Increment the count of periodic calls, wrapping around every 25 calls
+    // (equivalent to every 0.5 seconds);
+    if(m_periodicCount < 24) {
+      m_periodicCount++;
+    } else {
+      m_periodicCount = 0;
+    }
+
     // Runs the Scheduler.  This is responsible for polling buttons, adding
     // newly-scheduled commands, running already-scheduled commands, removing
     // finished or interrupted commands, and running subsystem periodic()
@@ -123,4 +133,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {}
+
+  /**
+   * This function returns the count of periodic calls. The value wraps around
+   * every 25 periodic calls (in other words, every half second).
+   */
+  public static int getPeriodicCount() {
+    return(m_periodicCount);
+  }
 }

@@ -1,4 +1,5 @@
 // Copyright (c) 2021 FRC Team 2881 - The Lady Cans
+//
 // Open Source Software; you can modify and/or share it under the terms of BSD
 // license file in the root directory of this project.
 
@@ -12,23 +13,23 @@ import frc.robot.utils.Log;
 
 /**
  * This is intended to be used as the default command for the {@link HDrive}
- * subsystem. It takes values from the given DoubleSupplier (obstensibly a
- * stick on a controller) and uses their values to directly drive the robot.
+ * subsystem. It takes values from the given DoubleSupplier (ostensibly a stick
+ * on a controller) and uses their values to directly drive the robot.
  */
 public class RunHDrive extends CommandBase {
-  HDrive m_hdrive;
-  DoubleSupplier m_left;
-  DoubleSupplier m_right;
+  private final HDrive m_hDrive;
+  private final DoubleSupplier m_left;
+  private final DoubleSupplier m_right;
 
   /**
-   * Creates an instance of this class.
+   * This command runs the HDrive based on driver control.
    *
    * <p>This is intended to be used as the default command for the {@link
    * HDrive} subsystem. It takes values from the given DoubleSupplier
-   * (obstensibly a stick on a controller) and uses their values to directly
+   * (ostensibly a stick on a controller) and uses their values to directly
    * drive the robot.
    *
-   * @param hdrive is the {@link HDrive} subsystem to use.
+   * @param hDrive is the {@link HDrive} subsystem to use.
    *
    * @param left is the DoubleSupplier used to get the speed to move to the
    *             left.
@@ -36,12 +37,12 @@ public class RunHDrive extends CommandBase {
    * @param right is the DoubleSupplier used to get the speed to move to the
    *              right.
    */
-  public RunHDrive(HDrive hdrive, DoubleSupplier left, DoubleSupplier right) {
-    m_hdrive = hdrive;
+  public RunHDrive(HDrive hDrive, DoubleSupplier left, DoubleSupplier right) {
+    m_hDrive = hDrive;
     m_left = left;
     m_right = right;
 
-    addRequirements(m_hdrive);
+    addRequirements(m_hDrive);
   }
 
   // Called when the command is initially scheduled.
@@ -57,11 +58,11 @@ public class RunHDrive extends CommandBase {
     double right = m_right.getAsDouble();
 
     if((left == 0) && (right > 0)) {
-      m_hdrive.run(right);
+      m_hDrive.run(right);
     } else if((right == 0) && (left > 0)) {
-      m_hdrive.run(-left);
+      m_hDrive.run(-left);
     } else {
-      m_hdrive.run(0);
+      m_hDrive.run(0);
     }
   }
 
@@ -69,7 +70,7 @@ public class RunHDrive extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     Log.end(this, interrupted);
-    m_hdrive.run(0);
+    m_hDrive.stop();
   }
 
   // Returns true when the command should end.

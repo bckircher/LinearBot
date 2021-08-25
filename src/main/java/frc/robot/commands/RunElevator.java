@@ -1,4 +1,5 @@
 // Copyright (c) 2021 FRC Team 2881 - The Lady Cans
+//
 // Open Source Software; you can modify and/or share it under the terms of BSD
 // license file in the root directory of this project.
 
@@ -12,19 +13,19 @@ import frc.robot.utils.Log;
 
 /**
  * This is intended to be used as the default command for the {@link Elevator}
- * subsystem. It takes values from the given DoubleSupplier (obstensibly a
- * stick on a controller) and uses its value to directly move the elevator.
+ * subsystem. It takes values from the given DoubleSupplier (ostensibly a stick
+ * on a controller) and uses its value to directly move the elevator.
  */
 public class RunElevator extends CommandBase {
-  Elevator m_elevator;
-  DoubleSupplier m_speed;
+  private final Elevator m_elevator;
+  private final DoubleSupplier m_speed;
 
   /**
-   * Creates an instance of this class.
+   * This command runs the elevator based on driver control.
    *
    * <p>This is intended to be used as the default command for the {@link
    * Elevator} subsystem. It takes values from the given DoubleSupplier
-   * (obstensibly a stick on a controller) and uses its value to directly move
+   * (ostensibly a stick on a controller) and uses its value to directly move
    * the elevator.
    *
    * @param elevator is the {@link Elevator} subsystem to use.
@@ -55,7 +56,7 @@ public class RunElevator extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     Log.end(this, interrupted);
-    m_elevator.run(0);
+    m_elevator.stop();
   }
 
   // Returns true when the command should end.

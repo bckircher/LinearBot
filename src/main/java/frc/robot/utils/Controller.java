@@ -1,4 +1,5 @@
 // Copyright (c) 2021 FRC Team 2881 - The Lady Cans
+//
 // Open Source Software; you can modify and/or share it under the terms of BSD
 // license file in the root directory of this project.
 
@@ -13,49 +14,49 @@ import frc.robot.Constants;
  * utilizing some signal conditioning to clean up the results.
  */
 public final class Controller {
-  private static double m_deadband = 0;
+  private static double m_deadBand = 0;
 
   /**
-   * Applies a deadband to the given value.<p>
+   * Applies a dead-band to the given value.<p>
    *
-   * Values below the deadband threshold are clamped to zero, while values
-   * above the deadband threshold are transformed to linearly range from 0 to
-   * 1 as the input ranges between the deadband threshold and 1.
+   * Values below the dead-band threshold are clamped to zero, while values
+   * above the dead-band threshold are transformed to linearly range from 0 to
+   * 1 as the input ranges between the dead-band threshold and 1.
    *
-   * @param value is the value to deadband.
+   * @param value is the value to dead-band.
    *
-   * @return Returns the deadbanded version of the input value.
+   * @return Returns the dead-banded version of the input value.
    */
-  private static double applyDeadband(double value) {
-    if(Math.abs(value) < m_deadband) {
+  private static double applyDeadBand(double value) {
+    if(Math.abs(value) < m_deadBand) {
       return(0);
     } else {
-      return((value - m_deadband) / (1.0 - m_deadband));
+      return((value - m_deadBand) / (1.0 - m_deadBand));
     }
   }
 
   /**
-   * Sets the deadband threashold.<p>
+   * Sets the dead-band threshold.<p>
    *
-   * Values below the deadband threshold are clamped to zero, while values
-   * above the deadband threshold are transformed to linearly range from 0 to
-   * 1 as the input ranges between the deadband threshold and 1.<p>
+   * Values below the deadb-and threshold are clamped to zero, while values
+   * above the dead-band threshold are transformed to linearly range from 0 to
+   * 1 as the input ranges between the dead-band threshold and 1.<p>
    *
-   * Note: The deadband threshold applies equally to all the analog
+   * Note: The dead-band threshold applies equally to all the analog
    * controls of every controller.
    *
-   * @param deadband is the deadband threshold to apply; must be between 0 (to
-   *                 disable deadbanding) and 1 (all values are clamped to
+   * @param deadBand is the dead-band threshold to apply; must be between 0 (to
+   *                 disable dead-banding) and 1 (all values are clamped to
    *                 zero).
    */
-  public static void setDeadband(double deadband) {
-    m_deadband = deadband;
+  public static void setDeadBand(double deadBand) {
+    m_deadBand = deadBand;
   }
 
   /**
    * Gets the X value for the left stick of the given controller.<p>
    *
-   * Deadbanding is applied to the value to keep small variations from zero,
+   * Dead-banding is applied to the value to keep small variations from zero,
    * when the stick is released, from imparting a movement command into the
    * system. Positive values indicate that the stick is deflected to the right
    * and negative values indicate that the stick is deflected to the left.
@@ -66,14 +67,14 @@ public final class Controller {
    *         -1 to 1.
    */
   public static double getLeftX(Joystick controller) {
-    return(applyDeadband(controller.getRawAxis(Constants.Controller.
+    return(applyDeadBand(controller.getRawAxis(Constants.Controller.
                                                kAnalogLeftX)));
   }
 
   /**
    * Gets the Y value for the left stick of the given controller.<p>
    *
-   * Deadbanding is applied to the value to keep small variations from zero,
+   * Dead-banding is applied to the value to keep small variations from zero,
    * when the stick is released, from imparting a movement command into the
    * system. Positive values indicate that the stick is deflected up and
    * negative values indicate that the stick is deflected down.
@@ -84,14 +85,14 @@ public final class Controller {
    *         -1 to 1.
    */
   public static double getLeftY(Joystick controller) {
-    return(applyDeadband(-controller.getRawAxis(Constants.Controller.
+    return(applyDeadBand(-controller.getRawAxis(Constants.Controller.
                                                 kAnalogLeftY)));
   }
 
   /**
    * Gets the X value for the right stick of the given controller.<p>
    *
-   * Deadbanding is applied to the value to keep small variations from zero,
+   * Dead-banding is applied to the value to keep small variations from zero,
    * when the stick is released, from imparting a movement command into the
    * system. Positive values indicate that the stick is deflected to the right
    * and negative values indicate that the stick is deflected to the left.
@@ -102,14 +103,14 @@ public final class Controller {
    *         -1 to 1.
    */
   public static double getRightX(Joystick controller) {
-    return(applyDeadband(controller.getRawAxis(Constants.Controller.
+    return(applyDeadBand(controller.getRawAxis(Constants.Controller.
                                                kAnalogRightX)));
   }
 
   /**
    * Gets the Y value for the right stick of the given controller.<p>
    *
-   * Deadbanding is applied to the value to keep small variations from zero,
+   * Dead-banding is applied to the value to keep small variations from zero,
    * when the stick is released, from imparting a movement command into the
    * system. Positive values indicate that the stick is deflected up and
    * negative values indicate that the stick is deflected down.
@@ -120,14 +121,14 @@ public final class Controller {
    *         -1 to 1.
    */
   public static double getRightY(Joystick controller) {
-    return(applyDeadband(-controller.getRawAxis(Constants.Controller.
+    return(applyDeadBand(-controller.getRawAxis(Constants.Controller.
                                                 kAnalogRightY)));
   }
 
   /**
    * Gets the value for the L2 control of the given controller.<p>
    *
-   * Deadbanding is applied to the value to keep small variations from zero,
+   * Dead-banding is applied to the value to keep small variations from zero,
    * when the stick is released, from imparting a movement command into the
    * system. 0 indicates that the control is fully released and 1 indicates
    * that the control is fully pressed.
@@ -138,14 +139,14 @@ public final class Controller {
    *         to 1.
    */
   public static double getLeft2(Joystick controller) {
-    return(applyDeadband((controller.getRawAxis(Constants.Controller.
+    return(applyDeadBand((controller.getRawAxis(Constants.Controller.
                                                 kAnalogLeft2) + 1) / 2));
   }
 
   /**
    * Gets the value for the R2 control of the given controller.<p>
    *
-   * Deadbanding is applied to the value to keep small variations from zero,
+   * Dead-banding is applied to the value to keep small variations from zero,
    * when the stick is released, from imparting a movement command into the
    * system. 0 indicates that the control is fully released and 1 indicates
    * that the control is fully pressed.
@@ -156,7 +157,7 @@ public final class Controller {
    *         to 1.
    */
   public static double getRight2(Joystick controller) {
-    return(applyDeadband((controller.getRawAxis(Constants.Controller.
+    return(applyDeadBand((controller.getRawAxis(Constants.Controller.
                                                 kAnalogRight2) + 1) / 2));
   }
 

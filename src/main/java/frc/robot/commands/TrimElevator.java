@@ -1,4 +1,5 @@
 // Copyright (c) 2021 FRC Team 2881 - The Lady Cans
+//
 // Open Source Software; you can modify and/or share it under the terms of BSD
 // license file in the root directory of this project.
 
@@ -15,12 +16,12 @@ import frc.robot.utils.Log;
  * allowing it to be put back into a level condition.
  */
 public class TrimElevator extends CommandBase {
-  Elevator m_elevator;
-  DoubleSupplier m_left;
-  DoubleSupplier m_right;
+  private final Elevator m_elevator;
+  private final DoubleSupplier m_left;
+  private final DoubleSupplier m_right;
 
   /**
-   * Creates an instance of this class.
+   * This command trims the elevator based on driver control.
    *
    * <p>This command allows each side of the {@link Elevator} to be run
    * manually, allowing it to be put back into a level condition.
