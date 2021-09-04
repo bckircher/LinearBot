@@ -13,6 +13,10 @@ import frc.robot.utils.Log;
  * This command moves the elevator to a specific height.
  */
 public class ElevatorToHeight extends CommandBase {
+  private static final double m_defaultSpeed = 0.5;
+  private static final double m_kS = 0.1;
+  private static final double m_kP = 0.1;
+  private static final double m_kError = 0.01;
   private final Elevator m_elevator;
   private final double m_target;
   private final double m_maxSpeed;
@@ -71,7 +75,7 @@ public class ElevatorToHeight extends CommandBase {
    * @param target is the height to which the elevator should be moved.
    */
   public ElevatorToHeight(Elevator elevator, double target) {
-    this(elevator, target, 0.5, false);
+    this(elevator, target, m_defaultSpeed, false);
   }
 
   // Called when the command is initially scheduled.
@@ -89,15 +93,15 @@ public class ElevatorToHeight extends CommandBase {
     error = m_target - m_elevator.getPosition();
 
     // Compute the speed that the elevator should move.
-    speed = error * 0.1;
+    speed = error * m_kP;
 
     // If the speed is not zero but too small, increase it to the minimum (so
     // the elevator has enough power to move).
-    if((speed > 0) && (speed < 0.1)) {
-      speed = 0.1;
+    if((speed > 0) && (speed < m_kS)) {
+      speed = m_kS;
     }
-    if((speed < 0) && (speed > -0.1)) {
-      speed = -0.1;
+    if((speed < 0) && (speed > -m_kS)) {
+      speed = -m_kS;
     }
 
     // If the speed is greater than the maximum, reduce it to the maximum.
@@ -122,7 +126,7 @@ public class ElevatorToHeight extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_hold || (Math.abs(m_target - m_elevator.getPosition()) > 0.1)) {
+    if(m_hold || (Math.abs(m_target - m_elevator.getPosition()) > m_kError)) {
       return false;
     }
     return true;

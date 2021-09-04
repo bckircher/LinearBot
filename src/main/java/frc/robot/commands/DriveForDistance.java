@@ -15,6 +15,12 @@ import frc.robot.utils.NavX;
  * maintain its heading.
  */
 public class DriveForDistance extends CommandBase {
+  private static final double m_defaultSpeed = 0.5;
+  private static final double m_kS = 0.2;
+  private static final double m_kP_Speed = 1;
+  private static final double m_kP_Steer = 0;//0.1;
+  private static final double m_kError_Speed = 0.01;
+  private static final double m_kError_Steer = 0.5;
   private final Drive m_drive;
   private final NavX m_navX;
   private final double m_distance;
@@ -87,7 +93,7 @@ public class DriveForDistance extends CommandBase {
    * @param distance is the distance the robot should travel.
    */
   public DriveForDistance(Drive drive, NavX navX, double distance) {
-    this(drive, navX, distance, 0.5, false);
+    this(drive, navX, distance, m_defaultSpeed, false);
   }
 
   // Called when the command is initially scheduled.
@@ -109,23 +115,29 @@ public class DriveForDistance extends CommandBase {
     error = m_target - m_drive.getPosition();
 
     // Compute the speed that the robot should move.
-    speed = error * 0.1;
+    if(Math.abs(error) < m_kError_Speed) {
+      speed = 0;
+    } else {
+      speed = error * m_kP_Speed;
+    }
 
     // If the speed is not zero but too small, increase it to the minimum (so
     // the robot has enough power to move).
-    if((speed > 0) && (speed < 0.2)) {
-      speed = 0.2;
-    }
-    if((speed < 0) && (speed > -0.2)) {
-      speed = -0.2;
+    if((speed != 0) && (Math.abs(speed) < m_kS)) {
+      if(speed > 0) {
+        speed = m_kS;
+      } else {
+        speed = -m_kS;
+      }
     }
 
     // If the speed is greater than the maximum, reduce it to the maximum.
-    if(speed > m_maxSpeed) {
-      speed = m_maxSpeed;
-    }
-    if(speed < -m_maxSpeed) {
-      speed = -m_maxSpeed;
+    if(Math.abs(speed) > m_maxSpeed) {
+      if(speed > 0) {
+        speed = m_maxSpeed;
+      } else {
+        speed = -m_maxSpeed;
+      }
     }
 
     // Determine how far the robot is from the target direction.
@@ -133,7 +145,11 @@ public class DriveForDistance extends CommandBase {
 
     // Compute the rotation that the robot should turn to get back to going
     // the desired direction.
-    rotation = error * 0.1;
+    if((speed == 0) && (Math.abs(error) < m_kError_Steer)) {
+      rotation = 0;
+    } else {
+      rotation = error * m_kP_Steer;
+    }
 
     // Move the robot at the computed speed.
     m_drive.driveArcade(speed, rotation);
@@ -149,7 +165,8 @@ public class DriveForDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_hold || (Math.abs(m_target - m_drive.getPosition()) > 0.1)) {
+    if(m_hold ||
+       (Math.abs(m_target - m_drive.getPosition()) > m_kError_Speed)) {
       return false;
     }
     return true;

@@ -52,7 +52,7 @@ public class TrimElevator extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_elevator.run(m_left.getAsDouble() / 4.0, m_right.getAsDouble() / 4.0);
+    m_elevator.run(m_left.getAsDouble(), m_right.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
@@ -60,7 +60,7 @@ public class TrimElevator extends CommandBase {
   public void end(boolean interrupted) {
     Log.end(this, interrupted);
     m_elevator.run(0, 0);
-    m_elevator.resetEncoders();
+    m_elevator.resetPosition();
   }
 
   // Returns true when the command should end.

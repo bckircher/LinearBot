@@ -98,11 +98,11 @@ public final class Constants {
     public static final int kMotorRightBack = 4;
 
     /**
-     * The conversion factor from encoder ticks to distance traveled by the
+     * The conversion factor from encoder rotations to distance traveled by the
      * robot, in meters.
      */
     public static final double kEncoderConversion =
-      GearRatio.computeWheel(42, 12, 50, 18, 36, Units.inchesToMeters(6));
+      GearRatio.computeWheel(1, 12, 50, 18, 36, Units.inchesToMeters(6));
 
     /**
      * The track width of the robot, in meters.
@@ -175,17 +175,17 @@ public final class Constants {
     public static final int kMotorRight = 6;
 
     /**
-     * The conversion factor from encoder ticks to distance traveled for the
-     * elevator.
+     * The conversion factor from encoder rotations to distance traveled for
+     * the elevator.
      */
     public static final double kEncoderConversion =
-      GearRatio.computeLeadScrew(42, 16, 32, Units.inchesToMeters(1));
+      GearRatio.computeLeadScrew(1, 16, 32, 2, 1, Units.inchesToMeters(0.5));
 
     /**
      * The kP value for the P-controller used by the right side of the elevator
      * to track the left side of the elevator.
      */
-    public static final double kP = 0.1;
+    public static final double kP = 0;
   }
 
   /**
@@ -198,11 +198,11 @@ public final class Constants {
     public static final int kMotor = 7;
 
     /**
-     * The conversion factor from encoder ticks to distance traveled by the
+     * The conversion factor from encoder rotations to distance traveled by the
      * robot, in meters.
      */
     public static final double kEncoderConversion =
-      GearRatio.computeWheel(42, 12, 50, 50, 64, Units.inchesToMeters(4));
+      GearRatio.computeWheel(1, 12, 50, 50, 64, Units.inchesToMeters(4));
   }
 
   /**
@@ -351,6 +351,6 @@ public final class Constants {
     /**
      * The amount of dead-band to apply to the analog controls.
      */
-    public static final double kDeadBand = 0.05;
+    public static final double kDeadBand = 0.1;
   }
 }

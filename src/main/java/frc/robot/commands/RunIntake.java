@@ -67,6 +67,8 @@ public class RunIntake extends CommandBase {
     double in = m_in.getAsDouble();
     double out = m_out.getAsDouble();
 
+    // Run the intake in or out, based on the control that is being deflected.
+    // If both are being deflected, do not move.
     if((in == 0.0) && (out > 0.0)) {
       m_intake.run(out);
     } else if((out == 0.0) && (in > 0.0)) {

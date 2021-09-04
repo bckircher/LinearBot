@@ -5,6 +5,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -19,6 +20,8 @@ import frc.robot.utils.frc4048.Logging;
 public class HDrive extends SubsystemBase {
   private final CANSparkMax m_drive =
     new CANSparkMax(Constants.HDrive.kMotor, MotorType.kBrushless);
+
+  private final CANEncoder m_encoder = m_drive.getEncoder();
 
   private double m_driveTemp = 0;
 
@@ -38,6 +41,8 @@ public class HDrive extends SubsystemBase {
     m_drive.restoreFactoryDefaults();
     m_drive.setIdleMode(IdleMode.kCoast);
 
+    m_encoder.setPositionConversionFactor(Constants.HDrive.kEncoderConversion);
+
     SmartDashboard.putData(this);
   }
 
@@ -47,6 +52,7 @@ public class HDrive extends SubsystemBase {
     builder.addDoubleProperty("Temp: HDrive", () -> m_driveTemp, null);
     builder.addBooleanProperty("Temp:: HDriveGood",
         () -> m_driveTemp < Constants.maxMotorTemperature, null);
+    builder.addDoubleProperty("Position", this::getPosition, null);
   }
 
   @Override
@@ -63,5 +69,17 @@ public class HDrive extends SubsystemBase {
 
   public void stop() {
     m_drive.stopMotor();
+  }
+
+  public void resetPosition() {
+    m_encoder.setPosition(0);
+  }
+
+  public double getPosition() {
+    return -m_encoder.getPosition();
+  }
+
+  public double getCurrent() {
+    return(m_drive.getOutputCurrent());
   }
 }

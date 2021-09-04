@@ -22,6 +22,7 @@ public class Elevator extends SubsystemBase {
     new CANSparkMax(Constants.Elevator.kMotorLeft, MotorType.kBrushless);
   private final CANSparkMax m_right =
     new CANSparkMax(Constants.Elevator.kMotorRight, MotorType.kBrushless);
+
   private final CANEncoder m_leftEncoder = m_left.getEncoder();
   private final CANEncoder m_rightEncoder = m_right.getEncoder();
 
@@ -72,9 +73,13 @@ public class Elevator extends SubsystemBase {
     builder.addDoubleProperty("Temp: Left", () -> m_leftTemp, null);
     builder.addBooleanProperty("Temp: LeftGood",
         () -> m_leftTemp < Constants.maxMotorTemperature, null);
+    builder.addDoubleProperty("Left Position",
+                              () -> m_leftEncoder.getPosition(), null);
     builder.addDoubleProperty("Temp: Right", () -> m_rightTemp, null);
     builder.addBooleanProperty("Temp:: RightGood",
         () -> m_rightTemp < Constants.maxMotorTemperature, null);
+    builder.addDoubleProperty("Right Position",
+                              () -> m_rightEncoder.getPosition(), null);
   }
 
   @Override
@@ -100,7 +105,7 @@ public class Elevator extends SubsystemBase {
     }
 
     m_left.set(speed);
-    if((speed == 0) && (Math.abs(delta) < 0.1)) {
+    if((speed == 0) && (Math.abs(delta) < 0.01)) {
       m_right.set(0);
     } else {
       m_right.set(speed + (delta * Constants.Elevator.kP));
@@ -108,8 +113,8 @@ public class Elevator extends SubsystemBase {
   }
 
   public void run(double left, double right) {
-    m_left.set(left);
-    m_right.set(right);
+    m_left.set(left / 4);
+    m_right.set(right / 4);
   }
 
   public void stop() {
@@ -117,12 +122,12 @@ public class Elevator extends SubsystemBase {
     m_right.stopMotor();
   }
 
-  public double getPosition() {
-    return((m_leftEncoder.getPosition() + m_rightEncoder.getPosition()) / 2);
-  }
-
-  public void resetEncoders() {
+  public void resetPosition() {
     m_leftEncoder.setPosition(0);
     m_rightEncoder.setPosition(0);
+  }
+
+  public double getPosition() {
+    return (m_leftEncoder.getPosition() + m_rightEncoder.getPosition()) / 2;
   }
 }

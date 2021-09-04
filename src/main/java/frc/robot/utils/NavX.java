@@ -30,7 +30,7 @@ public class NavX extends AHRS {
   private double getVelocity() {
     double x = getVelocityX();
     double y = getVelocityY();
-    return(Math.sqrt((x * x) + (y * y)));
+    return Math.sqrt((x * x) + (y * y));
   }
 
   public Rotation2d getRotation2D() {

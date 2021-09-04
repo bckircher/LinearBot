@@ -57,6 +57,8 @@ public class RunHDrive extends CommandBase {
     double left = m_left.getAsDouble();
     double right = m_right.getAsDouble();
 
+    // Run the HDrive left or right, based on the control that is being
+    // deflected. If both are being deflected, do not move.
     if((left == 0) && (right > 0)) {
       m_hDrive.run(right);
     } else if((right == 0) && (left > 0)) {

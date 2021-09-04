@@ -30,14 +30,14 @@ public class GearRatio
     double dRatio;
     int iIdx;
     if((dArgs.length < 2) || ((dArgs.length & 1) == 1)) {
-      return(0);
+      return 0;
     }
     dRatio = (dArgs[dArgs.length - 1] * Math.PI) / dArgs[0];
     for(iIdx = 1; iIdx < (dArgs.length - 1); iIdx += 2) {
       dRatio *= dArgs[iIdx];
       dRatio /= dArgs[iIdx + 1];
     }
-    return(dRatio);
+    return dRatio;
   }
 
   /**
@@ -62,14 +62,14 @@ public class GearRatio
     double dRatio;
     int iIdx;
     if((dArgs.length < 2) || ((dArgs.length & 1) == 1)) {
-      return(0);
+      return 0;
     }
     dRatio = dArgs[dArgs.length - 1] / dArgs[0];
     for(iIdx = 1; iIdx < (dArgs.length - 1); iIdx += 2) {
       dRatio *= dArgs[iIdx];
       dRatio /= dArgs[iIdx + 1];
     }
-    return(dRatio);
+    return dRatio;
   }
 
   // A unit test for the gear ratio computation function.
@@ -110,10 +110,10 @@ public class GearRatio
       error = true;
     }
 
-    ratio = GearRatio.computeLeadScrew(42, 16, 32, 1);
+    ratio = GearRatio.computeLeadScrew(42, 16, 32, 2, 1, 0.5);
     expected = 0.011905;
     if(Math.abs(ratio - expected) > 0.00001) {
-      System.out.printf("GearRatio.computeLeadScrew(42, 16, 32, 1) " +
+      System.out.printf("GearRatio.computeLeadScrew(42, 16, 32, 2, 1, 0.5) " +
                         "returned %f, expecting %f\n", ratio, expected);
       error = true;
     }

@@ -46,6 +46,7 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
+    if(false) {
     double error, speed;
 
     m_current = m_pdp.getCurrent(Constants.PDP.kIntake);
@@ -66,6 +67,7 @@ public class Intake extends SubsystemBase {
 
     if(m_useLoop) {
       m_intake.set(m_speed);
+    }
     }
   }
 

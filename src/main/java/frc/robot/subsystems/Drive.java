@@ -60,6 +60,7 @@ public class Drive extends SubsystemBase {
         add("Left Back Current", m_leftBack.getOutputCurrent());
         add("Left Back Temperature", m_leftBack.getMotorTemperature());
         add("Left Back SPARK MAX Sticky Faults", m_leftBack.getStickyFaults());
+        add("Left Position", m_leftEncoder.getPosition());
         add("Right Front Applied Voltage", m_rightFront.getAppliedOutput());
         add("Right Front Current", m_rightFront.getOutputCurrent());
         add("Right Front Temperature", m_rightFront.getMotorTemperature());
@@ -70,6 +71,7 @@ public class Drive extends SubsystemBase {
         add("Right Back Temperature", m_rightBack.getMotorTemperature());
         add("Right Back SPARK MAX Sticky Faults",
             m_rightBack.getStickyFaults());
+        add("Right Position", -m_rightEncoder.getPosition());
       }
     };
 
@@ -118,6 +120,8 @@ public class Drive extends SubsystemBase {
     builder.addDoubleProperty("Temp: LeftBack", () -> m_leftBackTemp, null);
     builder.addBooleanProperty("Temp: LeftBackGood",
         () -> m_leftBackTemp < Constants.maxMotorTemperature, null);
+    builder.addDoubleProperty("Left Position",
+                              () -> m_leftEncoder.getPosition(), null);
     builder.addDoubleProperty("Temp: RightFront",
         () -> m_rightFrontTemp, null);
     builder.addBooleanProperty("Temp: RightFrontGood",
@@ -125,12 +129,14 @@ public class Drive extends SubsystemBase {
     builder.addDoubleProperty("Temp: RightBack", () -> m_rightBackTemp, null);
     builder.addBooleanProperty("Temp: RightBackGood",
         () -> m_rightBackTemp < Constants.maxMotorTemperature, null);
+    builder.addDoubleProperty("Right Position",
+                              () -> -m_rightEncoder.getPosition(), null);
   }
 
   @Override
   public void periodic() {
     m_odometry.update(m_navX.getRotation2D(), m_leftEncoder.getPosition(),
-                      m_rightEncoder.getPosition());
+                      -m_rightEncoder.getPosition());
 
     // Update the motor temperature when the count matches the motor ID.
     if(Robot.getPeriodicCount() == Constants.Drive.kMotorLeftFront) {
@@ -171,12 +177,12 @@ public class Drive extends SubsystemBase {
   }
 
   public double getPosition() {
-    return((m_leftEncoder.getPosition() + m_rightEncoder.getPosition()) / 2);
+    return (m_leftEncoder.getPosition() - m_rightEncoder.getPosition()) / 2;
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(m_leftEncoder.getVelocity(),
-                                            m_rightEncoder.getVelocity());
+                                            -m_rightEncoder.getVelocity());
   }
 
   public Pose2d getPose() {

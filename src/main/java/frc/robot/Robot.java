@@ -139,6 +139,6 @@ public class Robot extends TimedRobot {
    * every 25 periodic calls (in other words, every half second).
    */
   public static int getPeriodicCount() {
-    return(m_periodicCount);
+    return m_periodicCount;
   }
 }

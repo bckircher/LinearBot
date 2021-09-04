@@ -29,9 +29,9 @@ public final class Controller {
    */
   private static double applyDeadBand(double value) {
     if(Math.abs(value) < m_deadBand) {
-      return(0);
+      return 0;
     } else {
-      return((value - m_deadBand) / (1.0 - m_deadBand));
+      return (value - m_deadBand) / (1.0 - m_deadBand);
     }
   }
 
@@ -67,8 +67,13 @@ public final class Controller {
    *         -1 to 1.
    */
   public static double getLeftX(Joystick controller) {
-    return(applyDeadBand(controller.getRawAxis(Constants.Controller.
-                                               kAnalogLeftX)));
+    double value;
+
+    // Get the X value of the left stick.
+    value = controller.getRawAxis(Constants.Controller.kAnalogLeftX);
+  
+    // Apply the dead-band to the value and return it.
+    return applyDeadBand(value);
   }
 
   /**
@@ -85,8 +90,14 @@ public final class Controller {
    *         -1 to 1.
    */
   public static double getLeftY(Joystick controller) {
-    return(applyDeadBand(-controller.getRawAxis(Constants.Controller.
-                                                kAnalogLeftY)));
+    double value;
+
+    // Get the Y value of the left stick. The value is inverted since the stick
+    // returns negative number when it is deflected up.
+    value = -controller.getRawAxis(Constants.Controller.kAnalogLeftY);
+
+    // Apply the dead-band to the value and return it.
+    return applyDeadBand(value);
   }
 
   /**
@@ -103,8 +114,13 @@ public final class Controller {
    *         -1 to 1.
    */
   public static double getRightX(Joystick controller) {
-    return(applyDeadBand(controller.getRawAxis(Constants.Controller.
-                                               kAnalogRightX)));
+    double value;
+
+    // Get the X value of the right stick.
+    value = controller.getRawAxis(Constants.Controller.kAnalogRightX);
+
+    // Apply the dead-band to the value and return it.
+    return applyDeadBand(value);
   }
 
   /**
@@ -121,8 +137,14 @@ public final class Controller {
    *         -1 to 1.
    */
   public static double getRightY(Joystick controller) {
-    return(applyDeadBand(-controller.getRawAxis(Constants.Controller.
-                                                kAnalogRightY)));
+    double value;
+
+    // Get the Y value of the right stick. The value is inverted since the
+    // stick returns negative number when it is deflected up.
+    value = -controller.getRawAxis(Constants.Controller.kAnalogRightY);
+
+    // Apply to dead-band to the value and return it.
+    return applyDeadBand(value);
   }
 
   /**
@@ -139,8 +161,15 @@ public final class Controller {
    *         to 1.
    */
   public static double getLeft2(Joystick controller) {
-    return(applyDeadBand((controller.getRawAxis(Constants.Controller.
-                                                kAnalogLeft2) + 1) / 2));
+    double value;
+
+    // Get the value of the L2 control.
+    value = controller.getRawAxis(Constants.Controller.kAnalogLeft2);
+
+    // The value ranges from -1 (fully released) to 1 (fully pressed), so scale
+    // it to range from 0 (fully released) to 1 (fully pressed), apply the
+    // dead-band, and return the value.
+    return applyDeadBand((value + 1) / 2);
   }
 
   /**
@@ -157,8 +186,15 @@ public final class Controller {
    *         to 1.
    */
   public static double getRight2(Joystick controller) {
-    return(applyDeadBand((controller.getRawAxis(Constants.Controller.
-                                                kAnalogRight2) + 1) / 2));
+    double value;
+
+    // Get the value of the R2 control.
+    value = controller.getRawAxis(Constants.Controller.kAnalogRight2);
+
+    // The value ranges from -1 (fully released) to 1 (fully pressed), so scale
+    // it to range from 0 (fully released) to 1 (fully pressed), apply the
+    // dead-band, and return the value.
+    return applyDeadBand((value + 1) / 2);
   }
 
   /**
@@ -177,7 +213,7 @@ public final class Controller {
     return new JoystickButton(controller, angle) {
       @Override
       public boolean get() {
-        return(controller.getPOV() == angle);
+        return controller.getPOV() == angle;
       }
     };
   }

@@ -14,6 +14,10 @@ import frc.robot.utils.NavX;
  * This command spins the robot to a face a given heading.
  */
 public class TurnToAngle extends CommandBase {
+  private static final double m_defaultSpeed = 0.5;
+  private static final double m_kS = 0.225;
+  private static final double m_kP = 0.0005;
+  private static final double m_kError = 0.5;
   private final Drive m_drive;
   private final NavX m_navX;
   private final double m_angle;
@@ -80,7 +84,7 @@ public class TurnToAngle extends CommandBase {
    * @param angle is the heading to which the robot should be turned.
    */
   public TurnToAngle(Drive drive, NavX navX, double angle) {
-    this(drive, navX, angle, 0.5, false);
+    this(drive, navX, angle, m_defaultSpeed, false);
   }
 
   // Called when the command is initially scheduled.
@@ -97,16 +101,27 @@ public class TurnToAngle extends CommandBase {
     // Determine how far the robot is from the desired heading.
     error = m_angle - m_navX.getAngle();
 
+    // Square the error (maintaining the sign). This makes the error
+    // exponentially larger when it is far from the target but get increasingly
+    // smaller as it approaches the target. This helps it to avoid
+    // overshooting.
+    error = Math.copySign(error * error, error);
+
+    // Set the error to zero if it is close enough to the target angle.
+    if(Math.abs(error) < m_kError) {
+      error = 0;
+    }
+
     // Compute the amount that the robot should rotate.
-    rotation = error * 0.1;
+    rotation = error * m_kP;
 
     // If the rotation rate is not zero but too small, increase it to the
     // minimum (so the robot has enough power to move).
-    if((rotation > 0) && (rotation < 0.2)) {
-      rotation = 0.2;
+    if((rotation > 0) && (rotation < m_kS)) {
+      rotation = m_kS;
     }
-    if((rotation < 0) && (rotation > -0.2)) {
-      rotation = -0.2;
+    if((rotation < 0) && (rotation > -m_kS)) {
+      rotation = -m_kS;
     }
 
     // If the rotation rate is greater than the maximum, reduce it to the
@@ -132,7 +147,7 @@ public class TurnToAngle extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_hold || (Math.abs(m_angle - m_navX.getAngle()) > 0.5)) {
+    if(m_hold || (Math.abs(m_angle - m_navX.getAngle()) > m_kError)) {
       return false;
     }
     return true;

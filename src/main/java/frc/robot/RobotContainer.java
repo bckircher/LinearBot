@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -22,6 +21,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveForDistance;
 import frc.robot.commands.DriveWithJoysticks;
@@ -31,6 +31,7 @@ import frc.robot.commands.RunElevator;
 import frc.robot.commands.RunHDrive;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.TrimElevator;
+import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HDrive;
@@ -47,7 +48,7 @@ import frc.robot.utils.NavX;
  */
 public class RobotContainer {
   private final NavX m_navX = new NavX();
-  private final PowerDistributionPanel m_pdp = new PowerDistributionPanel();
+  private final PowerDistributionPanel m_pdp = null;//new PowerDistributionPanel();
   private final Drive m_drive = new Drive(m_navX);
   private final Elevator m_elevator = new Elevator();
   private final HDrive m_hDrive = new HDrive();
@@ -85,8 +86,9 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Start streaming the first camera to the driver station.
-    m_camera = CameraServer.getInstance().startAutomaticCapture(0);
-    m_camera.setResolution(640, 480);
+    //m_camera = CameraServer.getInstance().startAutomaticCapture(0);
+    //m_camera.setResolution(640, 480);
+    m_camera = null;
   }
 
   /**
@@ -114,28 +116,36 @@ public class RobotContainer {
     SmartDashboard.putData(CommandScheduler.getInstance());
 
     // Publish the state of the subsystems to SmartDashboard.
-    SmartDashboard.putData(m_pdp);
+    //SmartDashboard.putData(m_pdp);
     SmartDashboard.putData(m_drive);
     SmartDashboard.putData(m_elevator);
     SmartDashboard.putData(m_hDrive);
     SmartDashboard.putData(m_intake);
 
     // Add buttons to SmartDashboard to allow commands to be manually run.
+    SmartDashboard.putData("Drive 1'",
+                           new DriveForDistance(m_drive, m_navX,
+                                                Units.feetToMeters(1)));
     SmartDashboard.putData("Drive 5'",
                            new DriveForDistance(m_drive, m_navX,
-                                                Units.feetToMeters(5), 0.5));
-    SmartDashboard.putData("Elevator 0'", new ElevatorToHeight(m_elevator, 0,
-                                                               0.5));
+                                                Units.feetToMeters(5)));
+    SmartDashboard.putData("Elevator 0'", new ElevatorToHeight(m_elevator, 0));
+    SmartDashboard.putData("Elevator 1'",
+                           new ElevatorToHeight(m_elevator,
+                                                Units.feetToMeters(1)));
+    SmartDashboard.putData("Elevator 2'",
+                           new ElevatorToHeight(m_elevator,
+                                                Units.feetToMeters(2)));
     SmartDashboard.putData("Elevator 3'",
                            new ElevatorToHeight(m_elevator,
-                                                Units.feetToMeters(3), 0.5));
-    SmartDashboard.putData("Elevator 6'",
-                           new ElevatorToHeight(m_elevator,
-                                                Units.feetToMeters(6), 0.5));
+                                                Units.feetToMeters(3)));
     SmartDashboard.putData("Trajectory 1",
                            new FollowTrajectory(m_drive, m_trajectory1));
     SmartDashboard.putData("Trajectory 2",
                            new FollowTrajectory(m_drive, m_trajectory2));
+
+    SmartDashboard.putData("Reset H",
+                           new RunCommand(() -> m_hDrive.resetPosition()));
   }
 
   /**
@@ -184,21 +194,47 @@ public class RobotContainer {
                        Constants.Controller.kButtonRedCircle).
       whileHeld(new FollowTrajectory(m_drive, m_trajectory2));
 
-    // Move the elevator to 10" when the manipulator's POV is set to 0 degrees
+    // Turn the robot to 0 degrees when the driver's POV is set to 0 degrees
+    // (in other words, up).
+    Controller.newPOVButton(m_driverJoystick, 0).
+      whileHeld(new TurnToAngle(m_drive, m_navX, 0, 0.5, true));
+
+    // Turn the robot to 90 degrees when the driver's POV is set to 90 degrees
+    // (in other words, right).
+    Controller.newPOVButton(m_driverJoystick, 90).
+      whileHeld(new TurnToAngle(m_drive, m_navX, 90, 0.5, true));
+
+    // Turn the robot to 180 degrees when the driver's POV is set to 180
+    // degrees (in other words, down).
+    Controller.newPOVButton(m_driverJoystick, 180).
+      whileHeld(new TurnToAngle(m_drive, m_navX, 180, 0.5, true));
+
+    // Turn the robot to 270 degrees when the driver's POV is set to 270
+    // degrees (in other words, down).
+    Controller.newPOVButton(m_driverJoystick, 270).
+      whileHeld(new TurnToAngle(m_drive, m_navX, 270, 0.5, true));
+
+    // Move the elevator to 30" when the manipulator's POV is set to 0 degrees
     // (in other words, up).
     Controller.newPOVButton(m_manipulatorJoystick, 0).
+      whileHeld(new ElevatorToHeight(m_elevator, Units.inchesToMeters(30), 0.5,
+                                     true));
+
+    // Move the elevator to 20" when the manipulator's POV is set to 90 degrees
+    // (in other words, to the right).
+    Controller.newPOVButton(m_manipulatorJoystick, 90).
+      whileHeld(new ElevatorToHeight(m_elevator, Units.inchesToMeters(20), 0.5,
+                                     true));
+
+    // Move the elevator to 10" when the manipulator's POV is set to 180
+    // degrees (in other words, down).
+    Controller.newPOVButton(m_manipulatorJoystick, 180).
       whileHeld(new ElevatorToHeight(m_elevator, Units.inchesToMeters(10), 0.5,
                                      true));
 
-    // Move the elevator to 5" when the manipulator's POV is set to 90 degrees
-    // (in other words, to the right).
-    Controller.newPOVButton(m_manipulatorJoystick, 90).
-      whileHeld(new ElevatorToHeight(m_elevator, Units.inchesToMeters(5), 0.5,
-                                     true));
-
-    // Move the elevator to 0" when the manipulator's POV is set to 180 degrees
-    // (in other words, down).
-    Controller.newPOVButton(m_manipulatorJoystick, 180).
+    // Move the elevator to 0" when the manipulator's POV is set to 270 degrees
+    // (in other words, to the left).
+    Controller.newPOVButton(m_manipulatorJoystick, 270).
       whileHeld(new ElevatorToHeight(m_elevator, 0, 0.5, true));
 
     // Allow the elevator to be trimmed by the manipulator while the
