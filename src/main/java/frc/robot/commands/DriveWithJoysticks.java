@@ -17,8 +17,19 @@ import frc.robot.utils.Log;
  * stick on a controller) and uses their values to directly drive the robot.
  */
 public class DriveWithJoysticks extends CommandBase {
+  /**
+   * The {@link Drive} subsystem to use.
+   */
   private final Drive m_drive;
+
+  /**
+   * The DoubleSupplier used to determine the speed to drive the robot.
+   */
   private final DoubleSupplier m_speed;
+
+  /**
+   * The DoubleSupplier used to determine the amount to spin the robot.
+   */
   private final DoubleSupplier m_rotation;
 
   /**

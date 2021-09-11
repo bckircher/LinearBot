@@ -19,7 +19,7 @@ public class Intake extends SubsystemBase {
   private double m_target = 0;
   private double m_speed = 0;
   private double m_current = 0;
-  private final boolean m_useLoop = false;
+  private final boolean m_useLoop = true;
 
   public Logging.LoggingContext loggingContext =
     new Logging.LoggingContext(this.getClass()) {
@@ -46,7 +46,6 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if(false) {
     double error, speed;
 
     m_current = m_pdp.getCurrent(Constants.PDP.kIntake);
@@ -67,7 +66,6 @@ public class Intake extends SubsystemBase {
 
     if(m_useLoop) {
       m_intake.set(m_speed);
-    }
     }
   }
 

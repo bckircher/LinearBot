@@ -17,8 +17,21 @@ import frc.robot.utils.Log;
  * on a controller) and uses their values to directly drive the robot.
  */
 public class RunHDrive extends CommandBase {
+  /**
+   * The {@link HDrive} subsystem to use.
+   */
   private final HDrive m_hDrive;
+
+  /** 
+   * The DoubleSupplier used to determine the speed to strafe the robot to the
+   * left.
+   */
   private final DoubleSupplier m_left;
+
+  /**
+   * The DoubleSupplier used to determine the speed to strafe the robot to the
+   * right.
+   */
   private final DoubleSupplier m_right;
 
   /**

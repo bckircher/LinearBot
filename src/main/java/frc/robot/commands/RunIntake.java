@@ -18,8 +18,21 @@ import frc.robot.utils.Log;
  * intake.
  */
 public class RunIntake extends CommandBase {
+  /**
+   * The {@link Intake} subsystem to use.
+   */
   private final Intake m_intake;
+
+  /**
+   * The DoubleSupplier that determines how much to run the intake in the in
+   * direction.
+   */
   private final DoubleSupplier m_in;
+
+  /**
+   * The DoubleSupplier that determines how much to run the intake in the out
+   * direction.
+   */
   private final DoubleSupplier m_out;
 
   /**

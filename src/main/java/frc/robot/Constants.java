@@ -30,47 +30,47 @@ public final class Constants {
      * The PDP channel that powers the front left motor of the {@link Drive}
      * subsystem.
      */
-    public static final int kDriveLeftFront = 1;
+    public static final int kDriveLeftFront = 14;
     
     /**
      * The PDP channel that powers the back left motor of the {@link Drive}
      * subsystem.
      */
-    public static final int kDriveLeftBack = 2;
+    public static final int kDriveLeftBack = 15;
 
     /**
      * The PDP channel that powers the front right motor of the {@link Drive}
      * subsystem.
      */
-    public static final int kDriveRightFront = 3;
+    public static final int kDriveRightFront = 12;
 
     /**
      * The PDP channel that powers the back right motor of the {@link Drive}
      * subsystem.
      */
-    public static final int kDriveRightBack = 4;
+    public static final int kDriveRightBack = 13;
 
     /**
      * The PDP channel that powers the left motor of the {@link Elevator}
      * subsystem.
      */
-    public static final int kElevatorLeft = 5;
+    public static final int kElevatorLeft = 2;
 
     /**
      * The PDP channel that powers the right motor of the {@link Elevator}
      * subsystem.
      */
-    public static final int kElevatorRight = 6;
+    public static final int kElevatorRight = 0;
 
     /**
      * The PDP channel that powers the motor of the {@link HDrive} subsystem.
      */
-    public static final int kHDrive = 7;
+    public static final int kHDrive = 1;
 
     /**
      * The PDP channel that powers the motor of the {@link Intake} subsystem.
      */
-    public static final int kIntake = 8;
+    public static final int kIntake = 7;
   }
 
   /**

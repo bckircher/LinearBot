@@ -48,7 +48,7 @@ import frc.robot.utils.NavX;
  */
 public class RobotContainer {
   private final NavX m_navX = new NavX();
-  private final PowerDistributionPanel m_pdp = null;//new PowerDistributionPanel();
+  private final PowerDistributionPanel m_pdp = new PowerDistributionPanel();
   private final Drive m_drive = new Drive(m_navX);
   private final Elevator m_elevator = new Elevator();
   private final HDrive m_hDrive = new HDrive();

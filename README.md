@@ -31,13 +31,13 @@ This project contains the code to drive the 2019/2020/2021 linear elevator
 # ToDo
 
 * [X] Tune DriveForDistance command
-* [ ] Add gyro to DriveForDistance command
+* [X} Add gyro to DriveForDistance command
 * [X] Tune StrafeForDistance command
 * [ ] Tune Elevator subsystem
 * [X] Tune TurnToAngle command
 * [ ] Tune ElevatorToHeight command
 * [ ] Characterize drive train
 * [ ] Test FollowTrajectory command
-* [ ] Upgrade PDP firmware
-* [ ] Determine what's wrong with the PDP
+* [X] Upgrade PDP firmware
+* [X] Determine what's wrong with the PDP
 * [ ] Tune Intake subsystem

@@ -14,14 +14,53 @@ import frc.robot.utils.NavX;
  * This command spins the robot to a face a given heading.
  */
 public class TurnToAngle extends CommandBase {
+  /**
+   * The default maximum speed to spin the robot, ranging from 0 to 1 (though
+   * it really doesn't makes sense for it to be less that kS, so that the robot
+   * will actually spin!).
+   */
   private static final double m_defaultSpeed = 0.5;
+
+  /**
+   * The minimum speed to spin the robot, which is just large enough to get the
+   * robot to move (overcoming static friction, hence kS).
+   */
   private static final double m_kS = 0.225;
+
+  /**
+   * The proportional feedback constant for the speed controller.
+   */
   private static final double m_kP = 0.0005;
+
+  /**
+   * The position error used to determine when the target has been reached.
+   */
   private static final double m_kError = 0.5;
+
+  /**
+   * The {@link Drive} subsystem used to spin the robot.
+   */
   private final Drive m_drive;
+
+  /**
+   * The {@link NavX} sensor that is used to monitor the robot's heading.
+   */
   private final NavX m_navX;
+
+  /**
+   * The heading to which the robot should be turned.
+   */
   private final double m_angle;
+
+  /**
+   * The maximum speed at which the robot should travel.
+   */
   private final double m_maxSpeed;
+
+  /**
+   * If the command should "hold" the robot's rotation when it reaches the
+   * target, or if it should finish (useful for use in command sequences).
+   */
   private final boolean m_hold;
 
   /**

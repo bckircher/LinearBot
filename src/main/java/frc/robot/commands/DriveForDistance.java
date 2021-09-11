@@ -15,18 +15,74 @@ import frc.robot.utils.NavX;
  * maintain its heading.
  */
 public class DriveForDistance extends CommandBase {
+  /**
+   * The default maximum speed to drive the robot, ranging from 0 to 1 (though
+   * it really doesn't makes sense for it to be less that kS, so that the robot
+   * will actually move!).
+   */
   private static final double m_defaultSpeed = 0.5;
+
+  /**
+   * The minimum speed to drive the robot, which is just large enough to get
+   * the robot to move (overcoming static friction, hence kS).
+   */
   private static final double m_kS = 0.2;
+
+  /**
+   * The proportional feedback constant for the speed controller.
+   */
   private static final double m_kP_Speed = 1;
-  private static final double m_kP_Steer = 0;//0.1;
-  private static final double m_kError_Speed = 0.01;
-  private static final double m_kError_Steer = 0.5;
+
+  /**
+   * The proportional feedback constant for the steering controller.
+   */
+  private static final double m_kP_Steer = 0.05;
+
+  /**
+   * The position error used to determine when the target has been reached.
+   */
+  private static final double m_kError_Position = 0.01;
+
+  /**
+   * The heading error used to determine final steering
+   */
+  private static final double m_kError_Heading = 0.5;
+
+  /**
+   * The {@link Drive} subsystem that is used to move the robot.
+   */
   private final Drive m_drive;
+
+  /**
+   * The {@link NavX} sensor that is used to monitor the robot's heading.
+   */
   private final NavX m_navX;
+
+  /**
+   * The distance that the robot should travel.
+   */
   private final double m_distance;
+
+  /**
+   * The maximum speed at which the robot should travel.
+   */
   private final double m_maxSpeed;
+
+  /**
+   * If the command should "hold" the robot's position when it reaches the
+   * target, or if it should finish (useful for use in command sequences).
+   */
   private final boolean m_hold;
+
+  /**
+   * The direction the robot was facing when the command was started, which is
+   * therefore the direction of travel it tries to maintain.
+   */
   private double m_direction;
+
+  /**
+   * The target position for the robot.
+   */
   private double m_target;
 
   /**
@@ -115,7 +171,7 @@ public class DriveForDistance extends CommandBase {
     error = m_target - m_drive.getPosition();
 
     // Compute the speed that the robot should move.
-    if(Math.abs(error) < m_kError_Speed) {
+    if(Math.abs(error) < m_kError_Position) {
       speed = 0;
     } else {
       speed = error * m_kP_Speed;
@@ -145,10 +201,14 @@ public class DriveForDistance extends CommandBase {
 
     // Compute the rotation that the robot should turn to get back to going
     // the desired direction.
-    if((speed == 0) && (Math.abs(error) < m_kError_Steer)) {
+    if((speed == 0) && (Math.abs(error) < m_kError_Heading)) {
       rotation = 0;
     } else {
       rotation = error * m_kP_Steer;
+      if((Math.abs(speed) + Math.abs(rotation)) < m_kS) {
+        rotation = Math.copySign(m_kS - Math.abs(speed) - Math.abs(rotation),
+                                 rotation);
+      }
     }
 
     // Move the robot at the computed speed.
@@ -166,7 +226,8 @@ public class DriveForDistance extends CommandBase {
   @Override
   public boolean isFinished() {
     if(m_hold ||
-       (Math.abs(m_target - m_drive.getPosition()) > m_kError_Speed)) {
+       (Math.abs(m_target - m_drive.getPosition()) > m_kError_Position) ||
+       (Math.abs(m_direction - m_navX.getAngle()) > m_kError_Heading)) {
       return false;
     }
     return true;

@@ -17,7 +17,15 @@ import frc.robot.utils.Log;
  * on a controller) and uses its value to directly move the elevator.
  */
 public class RunElevator extends CommandBase {
+  /**
+   * The {@link Elevator} subsystem to use.
+   */
   private final Elevator m_elevator;
+
+  /**
+   * The DoubleSupplier that provides the speed (and direction) at which the
+   * elevator should move.
+   */
   private final DoubleSupplier m_speed;
 
   /**

@@ -16,8 +16,21 @@ import frc.robot.utils.Log;
  * allowing it to be put back into a level condition.
  */
 public class TrimElevator extends CommandBase {
+  /**
+   * The {@link Elevator} subsystem to use.
+   */
   private final Elevator m_elevator;
+
+  /**
+   * The DoubleSupplier that returns the speed that the left side of the
+   * elevator should move.
+   */
   private final DoubleSupplier m_left;
+
+  /**
+   * The DoubleSupplier that returns the speed that the right side of the
+   * elevator should move.
+   */
   private final DoubleSupplier m_right;
 
   /**

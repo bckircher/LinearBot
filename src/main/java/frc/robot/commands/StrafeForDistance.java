@@ -18,16 +18,65 @@ import frc.robot.utils.Log;
  * robot to move across the ground).
  */
 public class StrafeForDistance extends CommandBase {
+  /**
+   * The default maximum speed to drive the robot, ranging from 0 to 1 (though
+   * it really doesn't makes sense for it to be less that kS, so that the robot
+   * will actually move!).
+   */
   private static final double m_defaultSpeed = 0.5;
+
+  /**
+   * A speed less than kS that is used to pivot the strafe assembly to the
+   * ground but not allow the robot to move.
+   */
   private static final double m_kS_Initial = 0.1;
+
+  /**
+   * The minimum speed to drive the robot, which is just large enough to get
+   * the robot to move (overcoming static friction, hence kS).
+   */
   private static final double m_kS = 0.2;
+
+  /**
+   * The proportional feedback constant for the speed controller.
+   */
   private static final double m_kP = 0.2;
+
+  /**
+   * The position error used to determine when the target has been reached.
+   */
   private static final double m_kError = 0.01;
+
+  /**
+   * The {@link HDrive} subsystem used to strafe the robot.
+   */
   private final HDrive m_hDrive;
+
+  /**
+   * The distance that the robot should strafe.
+   */
   private final double m_distance;
+
+  /**
+   * The maximum speed at which the robot should strafe.
+   */
   private final double m_maxSpeed;
+
+  /**
+   * If the command should "hold" the robot's position when it reaches the
+   * target, or if it should finish (useful for use in command sequences).
+   */
   private final boolean m_hold;
+
+  /**
+   * The target position for the robot.
+   */
   private double m_target;
+
+  /**
+   * An indication that the strafe assembly has been pivoted to the ground and
+   * the robot is ready to be strafed/is being strafed.
+   */
   private boolean m_ready;
 
   /**
