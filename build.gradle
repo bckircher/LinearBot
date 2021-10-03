@@ -43,6 +43,11 @@ deploy {
 // Set this to true to enable desktop support.
 def includeDesktopSupport = false
 
+// Enable the Maven repository.
+repositories {
+    mavenCentral()
+}
+
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
@@ -50,12 +55,14 @@ dependencies {
     nativeZip wpi.deps.wpilibJni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.wpilibJni(wpi.platforms.desktop)
 
-
     implementation wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 
-    testImplementation 'junit:junit:4.12'
+    //testImplementation 'junit:junit:4.12'
+    testImplementation platform('org.junit:junit-bom:5.8.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    compile 'org.mockito:mockito-core:3.12.4'
 
     // Enable simulation gui support. Must check the box in vscode to enable support
     // upon debugging
@@ -71,6 +78,14 @@ dependencies {
 sim {
     // Sets the websocket client remote host.
     // envVar "HALSIMWS_HOST", "10.0.0.2"
+}
+
+// Test configuration
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
