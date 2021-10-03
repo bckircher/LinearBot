@@ -138,7 +138,7 @@ public class TurnToAngle extends CommandBase {
     double error, rotation;
 
     // Determine how far the robot is from the desired heading.
-    error = m_angle - m_navX.getAngle();
+    error = m_navX.getAngle() - m_angle;
 
     // Square the error (maintaining the sign). This makes the error
     // exponentially larger when it is far from the target but get increasingly
@@ -186,7 +186,7 @@ public class TurnToAngle extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_hold || (Math.abs(m_angle - m_navX.getAngle()) > m_kError)) {
+    if(m_hold || (Math.abs(m_navX.getAngle() - m_angle) > m_kError)) {
       return false;
     }
     return true;

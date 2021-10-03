@@ -13,11 +13,11 @@ public class GearRatio
   /**
    * Computes the distance traveled for each encoder tick when driving a wheel.
    *
-   * <p>As an example, for a NEO (42 ticks per revolution) with a 16-tooth gear
+   * <p>As an example, for a NEO (1 "tick" per revolution) with a 16-tooth gear
    * on the output shaft connected to a 80-tooth gear on a shaft with a 6-inch
    * diameter wheel, the call would be:
    * 
-   * <pre>compute(42, 16, 80, 6);</pre>
+   * <pre>compute(1, 16, 80, 6);</pre>
    * 
    * @param dArgs The first argument is the encoder ticks per mechanical
    *              revolution, the last is the wheel diameter, and the pairs
@@ -44,11 +44,11 @@ public class GearRatio
    * Computes the distance traveled for each encoder tick when driving a lead
    * screw.
    *
-   * <p>As an example, for a NEO (42 ticks per revolution) with a 16-tooth gear
+   * <p>As an example, for a NEO (1 "tick" per revolution) with a 16-tooth gear
    * on the output shaft connected to a 32-tooth gear on a shaft with a
    * 0.5-inch per rotation lead screw, the call would be:
    * 
-   * <pre>compute(42, 16, 32, 0.5);</pre>
+   * <pre>compute(1, 16, 32, 0.5);</pre>
    * 
    * @param dArgs The first argument is the encoder ticks per mechanical
    *              revolution, the last is the lead screw travel per rotation,
@@ -70,56 +70,5 @@ public class GearRatio
       dRatio /= dArgs[iIdx + 1];
     }
     return dRatio;
-  }
-
-  // A unit test for the gear ratio computation function.
-  public static void main(String... args)
-  {
-    double ratio, expected;
-    boolean error = false;
-
-    ratio = GearRatio.computeWheel(42, 6);
-    expected = 0.448799;
-    if(Math.abs(ratio - expected) > 0.00001) {
-      System.out.printf("GearRatio.computeWheel(42, 6) returned %f, " +
-                        "expecting %f\n", ratio, expected);
-      error = true;
-    }
-
-    ratio = GearRatio.computeWheel(42, 16, 80, 6);
-    expected = 0.08976;
-    if(Math.abs(ratio - expected) > 0.00001) {
-      System.out.printf("GearRatio.computeWheel(42, 16, 80, 6) returned " +
-                        "%f, expecting %f\n", ratio, expected);
-      error = true;
-    }
-
-    ratio = GearRatio.computeWheel(42, 16, 80, 30, 50, 6);
-    expected = 0.053856;
-    if(Math.abs(ratio - expected) > 0.00001) {
-      System.out.printf("GearRatio.computeWheel(42, 16, 80, 30, 50, 6) " +
-                        "returned %f, expecting %f\n", ratio, expected);
-      error = true;
-    }
-
-    ratio = GearRatio.computeLeadScrew(42, 0.5);
-    expected = 0.011905;
-    if(Math.abs(ratio - expected) > 0.00001) {
-      System.out.printf("GearRatio.computeLeadScrew(42, 0.5) returned %f, " +
-                        "expecting %f\n", ratio, expected);
-      error = true;
-    }
-
-    ratio = GearRatio.computeLeadScrew(42, 16, 32, 2, 1, 0.5);
-    expected = 0.011905;
-    if(Math.abs(ratio - expected) > 0.00001) {
-      System.out.printf("GearRatio.computeLeadScrew(42, 16, 32, 2, 1, 0.5) " +
-                        "returned %f, expecting %f\n", ratio, expected);
-      error = true;
-    }
-
-    if(!error) {
-      System.out.printf("All tests passed!\n");
-    }
   }
 }

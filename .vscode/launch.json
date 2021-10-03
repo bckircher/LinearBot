@@ -5,13 +5,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "java",
-      "name": "Launch GearRatio",
-      "request": "launch",
-      "mainClass": "frc.robot.utils.GearRatio",
-      "projectName": "LinearBot"
-    },
-    {
       "type": "wpilib",
       "name": "WPILib Desktop Debug",
       "request": "launch",
