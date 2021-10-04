@@ -24,6 +24,7 @@ import org.mockito.Mockito;
 
 import frc.robot.utils.NavX;
 
+@Disabled
 public class testDrive {
   private final NavX m_navX = mock(NavX.class);
   private final CANSparkMax m_leftFront = mock(CANSparkMax.class);
