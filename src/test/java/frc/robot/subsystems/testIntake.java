@@ -35,7 +35,7 @@ public class testIntake {
 
   // Create an instance of the Intake subsystem.
   private final Intake m_intake = new Intake(m_pdp, m_spark);
-  
+
   // A unit test for running the Intake in no current conditions.
   @ParameterizedTest
   @MethodSource
@@ -154,7 +154,7 @@ public class testIntake {
     // Create and return an argument stream of these data sets.
     return builder.build();
   }
- 
+
   // A unit test for stopping the intake.
   @Test
   void stop() {

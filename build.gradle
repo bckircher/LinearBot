@@ -2,6 +2,7 @@ plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2021.3.1"
     id "com.palantir.git-version" version "0.12.3"
+    id 'com.diffplug.spotless' version '5.15.0'
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -98,5 +99,19 @@ jar {
     manifest {
         attributes 'Implementation-Version': details.branchName + "-" +
             details.gitHash + (details.isCleanTag ? "" : "-dirty")
+    }
+}
+
+spotless {
+    java {
+        target fileTree('.') {
+            include '**/*.java'
+            exclude '**/build/**', '**/build-*/**',
+                    '**/DriveCharacterization/**',
+                    '**/src/main/java/frc/robot/utils/frc4048/**'
+        }
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
     }
 }

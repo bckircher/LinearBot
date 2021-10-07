@@ -27,7 +27,7 @@ public class testGearRatio {
     double result = GearRatio.computeWheel(1, 16, 80, 6);
     double expected = 3.769911;
     double error = 0.00001;
-  
+
     assertTrue(Math.abs(result - expected) < error);
   }
 

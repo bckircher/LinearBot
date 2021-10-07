@@ -16,13 +16,13 @@ public class GearRatio
    * <p>As an example, for a NEO (1 "tick" per revolution) with a 16-tooth gear
    * on the output shaft connected to a 80-tooth gear on a shaft with a 6-inch
    * diameter wheel, the call would be:
-   * 
+   *
    * <pre>compute(1, 16, 80, 6);</pre>
-   * 
+   *
    * @param dArgs The first argument is the encoder ticks per mechanical
    *              revolution, the last is the wheel diameter, and the pairs
    *              between are the input then output gear tooth counts.
-   * 
+   *
    * @return The distance per encoder tick.
    */
   public static double
@@ -47,14 +47,14 @@ public class GearRatio
    * <p>As an example, for a NEO (1 "tick" per revolution) with a 16-tooth gear
    * on the output shaft connected to a 32-tooth gear on a shaft with a
    * 0.5-inch per rotation lead screw, the call would be:
-   * 
+   *
    * <pre>compute(1, 16, 32, 0.5);</pre>
-   * 
+   *
    * @param dArgs The first argument is the encoder ticks per mechanical
    *              revolution, the last is the lead screw travel per rotation,
    *              and the pairs between are the input then output gear tooth
    *              counts.
-   * 
+   *
    * @return The distance per encoder tick.
    */
   public static double

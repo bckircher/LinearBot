@@ -26,7 +26,7 @@ public class Blinkin extends Spark {
   public final static double kSinelon_Ocean = -0.75;
   public final static double kSinelon_Lava = -0.73;
   public final static double kSinelon_Forest = -0.71;
-  public final static double kBPM_Rainbow = -0.69; 
+  public final static double kBPM_Rainbow = -0.69;
   public final static double kBPM_Party = -0.67;
   public final static double kBPM_Ocean = -0.65;
   public final static double kBPM_Lava = -0.63;

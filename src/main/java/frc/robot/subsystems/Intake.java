@@ -116,7 +116,7 @@ public class Intake extends SubsystemBase {
 
     // Get the current flowing through the intake motor.
     m_current = m_pdp.getCurrent(Constants.PDP.kIntake);
-  
+
     // There is nothing to do if the target and current speeds are both zero.
     if((m_target == 0) && (m_speed == 0)) {
       return;

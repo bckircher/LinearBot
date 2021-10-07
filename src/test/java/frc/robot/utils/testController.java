@@ -75,7 +75,7 @@ public class testController {
   static Stream<Arguments> axes() {
     // Create a stream builder for storing all the test data sets.
     Stream.Builder<Arguments> builder = Stream.builder();
-      
+
     // Loop through the two dead band values.
     for(int deadBand = 0; deadBand < 2; deadBand++) {
       // Loop through the values for the axes.
@@ -137,7 +137,7 @@ public class testController {
                                  (Math.random() * 2.0) - 1.0,
                                  (Math.random() * 2.0) - 1.0,
                                  deadBand / 10.0));
-      }         
+      }
     }
 
     // Create and return an argument stream of these data sets.

@@ -75,7 +75,7 @@ public final class Controller {
 
     // Get the X value of the left stick.
     value = controller.getRawAxis(Constants.Controller.kAnalogLeftX);
-  
+
     // Apply the dead-band to the value and return it.
     return applyDeadBand(value);
   }

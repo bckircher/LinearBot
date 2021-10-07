@@ -207,7 +207,7 @@ public class Elevator extends SubsystemBase {
     // Determine how far apart the left and right sides of the elevator are
     // currently positioned.
     double delta = m_leftEncoder.getPosition() - m_rightEncoder.getPosition();
-  
+
     // See if the elevator is moving down.
     if(speed < 0) {
       // See if the left side is lower than the right side.
@@ -234,7 +234,7 @@ public class Elevator extends SubsystemBase {
         }
       }
     }
-    
+
     // Otherwise, the elevator is moving up.
     else {
       // See if the left side is lower than the right side.
@@ -248,7 +248,7 @@ public class Elevator extends SubsystemBase {
           right = 0;
         }
       }
-      
+
       // Otherwise, the left side is higher than the right side.
       else {
         // Moving up with the left side higher than the right side means that
