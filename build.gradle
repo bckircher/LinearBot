@@ -86,6 +86,7 @@ test {
     testLogging {
         events "passed", "skipped", "failed"
     }
+    exclude '**/*'
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
