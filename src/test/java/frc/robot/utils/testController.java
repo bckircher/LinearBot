@@ -28,8 +28,8 @@ public class testController {
   // (below) with the same name.
   @ParameterizedTest
   @MethodSource
-  void individualAxes(double lx, double ly, double rx, double ry, double l2,
-                      double r2, double deadBand) {
+  void axes(double lx, double ly, double rx, double ry, double l2, double r2,
+            double deadBand) {
     // Set the dead band for this test case.
     Controller.setDeadBand(deadBand);
 
@@ -72,28 +72,72 @@ public class testController {
   }
 
   // Generates a test data set for the individual axis test.
-  static Stream<Arguments> individualAxes() {
+  static Stream<Arguments> axes() {
     // Create a stream builder for storing all the test data sets.
     Stream.Builder<Arguments> builder = Stream.builder();
       
     // Loop through the two dead band values.
     for(int deadBand = 0; deadBand < 2; deadBand++) {
-      // Loop through the values for the individual axes.
-      for(int value = -100; value <= 100; value++) {
+      // Loop through the values for the axes.
+      for(int value = -10; value <= 10; value++) {
         // Add a data set for this value in each of the axes.
-        builder.add(Arguments.of(value / 100.0, 0.0, 0.0, 0.0, -1.0, -1.0,
+        builder.add(Arguments.of(value / 10.0, 0.0, 0.0, 0.0, -1.0, -1.0,
                                  deadBand / 10.0));
-        builder.add(Arguments.of(0.0, value / 100.0, 0.0, 0.0, -1.0, -1.0,
+        builder.add(Arguments.of(0.0, value / 10.0, 0.0, 0.0, -1.0, -1.0,
                                  deadBand / 10.0));
-        builder.add(Arguments.of(0.0, 0.0, value / 100.0, 0.0, -1.0, -1.0,
+        builder.add(Arguments.of(0.0, 0.0, value / 10.0, 0.0, -1.0, -1.0,
                                  deadBand / 10.0));
-        builder.add(Arguments.of(0.0, 0.0, 0.0, value / 100.0, -1.0, -1.0,
+        builder.add(Arguments.of(0.0, 0.0, 0.0, value / 10.0, -1.0, -1.0,
                                  deadBand / 10.0));
-        builder.add(Arguments.of(0.0, 0.0, 0.0, 0.0, value / 100.0, -1.0,
+        builder.add(Arguments.of(0.0, 0.0, 0.0, 0.0, value / 10.0, -1.0,
                                  deadBand / 10.0));
-        builder.add(Arguments.of(0.0, 0.0, 0.0, 0.0, -1.0, value / 100.0,
+        builder.add(Arguments.of(0.0, 0.0, 0.0, 0.0, -1.0, value / 10.0,
                                  deadBand / 10.0));
+
+        // Add a data set for this value in each pair of axes.
+        builder.add(Arguments.of(value / 10.0, value / 10.0, 0.0, 0,0, -1.0,
+                                 -1.0, deadBand / 10.0));
+        builder.add(Arguments.of(value / 10.0, 0.0, value / 10.0, 0.0, -1.0,
+                                 -1.0, deadBand / 10.0));
+        builder.add(Arguments.of(value / 10.0, 0.0, 0.0, value / 10.0, -1.0,
+                                 -1.0, deadBand / 10.0));
+        builder.add(Arguments.of(value / 10.0, 0.0, 0.0, 0.0, value / 10.0,
+                                 -1.0, deadBand / 10.0));
+        builder.add(Arguments.of(value / 10.0, 0.0, 0.0, 0.0, -1.0,
+                                 value / 10.0, deadBand / 10.0));
+        builder.add(Arguments.of(0.0, value / 10.0, value / 10.0, 0.0, -1.0,
+                                 -1.0, deadBand / 10.0));
+        builder.add(Arguments.of(0.0, value / 10.0, 0.0, value / 10.0, -1.0,
+                                 -1.0, deadBand / 10.0));
+        builder.add(Arguments.of(0.0, value / 10.0, 0.0, 0.0, value / 10.0,
+                                 -1.0, deadBand / 10.0));
+        builder.add(Arguments.of(0.0, value / 10.0, 0.0, 0.0, -1.0,
+                                 value / 10.0, deadBand / 10.0));
+        builder.add(Arguments.of(0.0, 0.0, value / 10.0, value / 10.0, -1.0,
+                                 -1.0, deadBand / 10.0));
+        builder.add(Arguments.of(0.0, 0.0, value / 10.0, 0.0, value / 10.0,
+                                 -1.0, deadBand / 10.0));
+        builder.add(Arguments.of(0.0, 0.0, value / 10.0, 0.0, -1.0,
+                                 value / 10.0, deadBand / 10.0));
+        builder.add(Arguments.of(0.0, 0.0, 0.0, value / 10.0, value / 10.0,
+                                 -1.0, deadBand / 10.0));
+        builder.add(Arguments.of(0.0, 0.0, 0.0, value / 10.0, -1.0,
+                                 value / 10.0, deadBand / 10.0));
+        builder.add(Arguments.of(0.0, 0.0, 0.0, 0.0, value / 10.0,
+                                 value / 10.0, deadBand / 10.0));
       }
+
+      // Loop through a set of randomized axes values.
+      for(int i = 0; i < 100; i++) {
+        // Add a randomized data set.
+        builder.add(Arguments.of((Math.random() * 2.0) - 1.0,
+                                 (Math.random() * 2.0) - 1.0,
+                                 (Math.random() * 2.0) - 1.0,
+                                 (Math.random() * 2.0) - 1.0,
+                                 (Math.random() * 2.0) - 1.0,
+                                 (Math.random() * 2.0) - 1.0,
+                                 deadBand / 10.0));
+      }         
     }
 
     // Create and return an argument stream of these data sets.
