@@ -382,7 +382,7 @@ public class testDrive {
     // Create test data sets for various positions of the two encoders.
     for(int i = -10; i <= 10; i++) {
       for(int j = -10; j <= 10; j++) {
-        builder.add(Arguments.of(i / 10.0, j / 10.0, (i + j) / 20.0));
+        builder.add(Arguments.of(i / 10.0, j / 10.0, (i - j) / 20.0));
       }
     }
 
@@ -390,7 +390,7 @@ public class testDrive {
      for(int i = 0; i < 100; i++) {
       left = (Math.random() * 2) - 1;
       right = (Math.random() * 2) - 1;
-      builder.add(Arguments.of(left, right, (left + right) / 2));
+      builder.add(Arguments.of(left, right, (left - right) / 2));
     }
 
     // Create and return an argument stream of these data sets.

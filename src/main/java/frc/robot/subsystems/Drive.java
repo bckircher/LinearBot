@@ -417,7 +417,7 @@ public class Drive extends SubsystemBase {
    * @return the position of the drive train, in meters.
    */
   public double getPosition() {
-    return (m_leftEncoder.getPosition() + m_rightEncoder.getPosition()) / 2;
+    return (m_leftEncoder.getPosition() - m_rightEncoder.getPosition()) / 2;
   }
 
   /**
