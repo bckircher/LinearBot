@@ -26,8 +26,6 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SPI;
 
-import com.playingwithfusion.CANVenom;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -57,10 +55,10 @@ import java.util.ArrayList;
 
 public class Robot extends TimedRobot {
 
-  static private double ENCODER_EDGES_PER_REV = 1;
+  static private int ENCODER_EDGES_PER_REV = 1 / 4;
   static private int PIDIDX = 0;
   static private int ENCODER_EPR = 1;
-  static private double GEARING = 1;
+  static private double GEARING = 8.3333333;
   
   private double encoderConstant = (1 / GEARING);
 
@@ -122,9 +120,9 @@ public class Robot extends TimedRobot {
 
 
         rightEncoderPosition = ()
-          -> encoder.getPosition() * encoderConstant;
+          -> -encoder.getPosition() * encoderConstant;
         rightEncoderRate = ()
-          -> encoder.getVelocity() * encoderConstant / 60.;
+          -> -encoder.getVelocity() * encoderConstant / 60.;
 
         break;
       case LEFT:
