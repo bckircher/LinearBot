@@ -138,6 +138,8 @@ $RECYCLE.BIN/
 .gradle
 /build/
 DriveCharacterization/characterization-project/build/
+ElevatorCharacterization/characterization-project/build/
+HDriveCharacterization/characterization-project/build/
 
 # Ignore Gradle GUI config
 gradle-app.setting
