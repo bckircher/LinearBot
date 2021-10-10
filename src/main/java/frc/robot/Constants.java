@@ -20,7 +20,7 @@ public final class Constants {
    * The maximum motor temperature allowed before the warning light is turned
    * on.
    */
-  public static final double maxMotorTemperature = 50.0;
+  public static final double maxMotorTemperature = 40.0;
 
   /**
    * The channel allocations on the PDP (Power Distribution Panel).
@@ -31,7 +31,7 @@ public final class Constants {
      * subsystem.
      */
     public static final int kDriveLeftFront = 14;
-    
+
     /**
      * The PDP channel that powers the back left motor of the {@link Drive}
      * subsystem.
@@ -119,25 +119,25 @@ public final class Constants {
      * The amount of power to required to overcome static friction in the drive
      * train. Determined via frc-characterization.
      */
-    public static final double kS = 0;
+    public static final double kS = 0.176;
 
     /**
      * The amount of power required to maintain a specific velocity. Determined
      * via frc-characterization.
      */
-    public static final double kV = 0;
+    public static final double kV = 1.07;
 
     /**
      * The amount of power required to achieve a specific acceleration.
      * Determined via frc-characterization.
      */
-    public static final double kA = 0;
+    public static final double kA = 0.124;
 
     /**
      * The proportional constant for the feedback controller. Determined via
      * frc-characterization.
      */
-    public static final double kP = 0;
+    public static final double kP = 2.51;
 
     /**
      * The derivative constants for the feedback controller. Determined via
@@ -182,10 +182,21 @@ public final class Constants {
       GearRatio.computeLeadScrew(1, 16, 32, 2, 1, Units.inchesToMeters(0.5));
 
     /**
+     * The maximum speed at which the elevator can be moved.
+     */
+    public static final double kMaxSpeed = 0.5;
+
+    /**
      * The kP value for the P-controller used by the right side of the elevator
      * to track the left side of the elevator.
      */
-    public static final double kP = 0;
+    public static final double kP = 8.0;
+
+    /**
+     * The maximum allowable error in position between the left and right side
+     * of the elevator.
+     */
+    public static final double kError = 0.01;
   }
 
   /**
@@ -217,12 +228,12 @@ public final class Constants {
     /**
      * The current limit on the intake motor.
      */
-    public static final double kMaxCurrent = 10.0;
+    public static final double kMaxCurrent = 8.0;
 
     /**
      * The kP value for the P-controller used by the current control loop.
      */
-    public static final double kP = 0.1;
+    public static final double kP = 0.05;
   }
 
   /**

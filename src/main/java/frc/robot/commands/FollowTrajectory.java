@@ -19,7 +19,11 @@ import frc.robot.utils.Log;
  * This command drives the robot along a given trajectory.
  */
 public class FollowTrajectory extends CommandBase {
+  private final Drive m_drive;
+  private final Trajectory m_trajectory;
   private final RamseteCommand m_ramsete;
+
+  // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/trajectories/troubleshooting.html
 
   /**
    * This command drives the robot along a given trajectory.
@@ -33,8 +37,9 @@ public class FollowTrajectory extends CommandBase {
    * @param trajectory is the trajectory to follow.
    */
   public FollowTrajectory(Drive drive, Trajectory trajectory) {
-    // Reset the drive odometry to the initial pose of the trajectory.
-    drive.resetOdometry(trajectory.getInitialPose());
+    m_drive = drive;
+
+    m_trajectory = trajectory;
 
     // The Ramsete controller for following the trajectory.
     RamseteController controller =
@@ -64,6 +69,10 @@ public class FollowTrajectory extends CommandBase {
   @Override
   public void initialize() {
     Log.init(this);
+
+    // Reset the drive odometry to the initial pose of the trajectory.
+    m_drive.resetOdometry(m_trajectory.getInitialPose());
+
     m_ramsete.initialize();
   }
 

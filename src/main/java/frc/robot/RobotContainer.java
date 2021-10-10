@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveForDistance;
 import frc.robot.commands.DriveWithJoysticks;
@@ -47,21 +49,63 @@ import frc.robot.utils.NavX;
  * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  /**
+   * The {@link NavX} object used by the robot.
+   */
   private final NavX m_navX = new NavX();
-  private final PowerDistributionPanel m_pdp = new PowerDistributionPanel();
-  private final Drive m_drive = new Drive(m_navX);
-  private final Elevator m_elevator = new Elevator();
-  private final HDrive m_hDrive = new HDrive();
-  private final Intake m_intake = new Intake(m_pdp);
 
+  /**
+   * The {@link PowerDistributionPanel} object used by the robot.
+   */
+  private final PowerDistributionPanel m_pdp = new PowerDistributionPanel();
+
+  /**
+   * The {@link Drive} subsystem used by the robot.
+   */
+  private final Drive m_drive = Drive.create(m_navX);
+
+  /**
+   * The {@link Elevator} subsystem used by the robot.
+   */
+  private final Elevator m_elevator = Elevator.create();
+
+  /**
+   * The {@link HDrive} subsystem used by the robot.
+   */
+  private final HDrive m_hDrive = HDrive.create();
+
+  /**
+   * The {@link Intake} subsystem used by the robot.
+   */
+  private final Intake m_intake = Intake.create(m_pdp);
+
+  /**
+   * The controller used by the driver.
+   */
   private final Joystick m_driverJoystick =
     new Joystick(Constants.Controller.kDriver);
+
+  /**
+   * The controller used by the manipulator.
+   */
   private final Joystick m_manipulatorJoystick =
     new Joystick(Constants.Controller.kManipulator);
 
+  /**
+   * The first PathWeaver trajectory.
+   */
   private final Trajectory m_trajectory1;
+
+  /**
+   * The second PathWeaver trajectory.
+   */
   private final Trajectory m_trajectory2;
 
+  private final Trajectory m_trajectory3;
+
+  /**
+   * The camera connected to the USB port of the roboRIO.
+   */
   private final UsbCamera m_camera;
 
   /**
@@ -72,6 +116,7 @@ public class RobotContainer {
     // Load the autonomous trajectories.
     m_trajectory1 = loadTrajectory("Test1.wpilib.json");
     m_trajectory2 = loadTrajectory("Test2.wpilib.json");
+    m_trajectory3 = loadTrajectory("Test3.wpilib.json");
 
     // Set the dead-band to apply to the analog controls.
     Controller.setDeadBand(Constants.Controller.kDeadBand);
@@ -86,13 +131,12 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Start streaming the first camera to the driver station.
-    //m_camera = CameraServer.getInstance().startAutomaticCapture(0);
-    //m_camera.setResolution(640, 480);
-    m_camera = null;
+    m_camera = CameraServer.getInstance().startAutomaticCapture(0);
+    m_camera.setResolution(640, 480);
   }
 
   /**
-   * Load a PathWeaver trajectories from the deploy directory.
+   * Load a PathWeaver trajectory from the deploy directory.
    */
   private Trajectory loadTrajectory(String json) {
     Trajectory trajectory;
@@ -116,7 +160,7 @@ public class RobotContainer {
     SmartDashboard.putData(CommandScheduler.getInstance());
 
     // Publish the state of the subsystems to SmartDashboard.
-    //SmartDashboard.putData(m_pdp);
+    SmartDashboard.putData(m_pdp);
     SmartDashboard.putData(m_drive);
     SmartDashboard.putData(m_elevator);
     SmartDashboard.putData(m_hDrive);
@@ -187,12 +231,16 @@ public class RobotContainer {
     // Follow the first trajectory while the driver's pink square is held.
     new JoystickButton(m_driverJoystick,
                        Constants.Controller.kButtonPinkSquare).
-      whileHeld(new FollowTrajectory(m_drive, m_trajectory1));
+      whileHeld(new FollowTrajectory(m_drive, m_trajectory1).andThen(new WaitCommand(60)));
 
     // Follow the second trajectory while the driver's red circle is held.
     new JoystickButton(m_driverJoystick,
                        Constants.Controller.kButtonRedCircle).
-      whileHeld(new FollowTrajectory(m_drive, m_trajectory2));
+      whileHeld(new FollowTrajectory(m_drive, m_trajectory2).andThen(new WaitCommand(60)));
+
+    new JoystickButton(m_driverJoystick,
+                      Constants.Controller.kButtonGreenTriangle).
+      whileHeld(new FollowTrajectory(m_drive, m_trajectory3).andThen(new WaitCommand(60)));
 
     // Turn the robot to 0 degrees when the driver's POV is set to 0 degrees
     // (in other words, up).

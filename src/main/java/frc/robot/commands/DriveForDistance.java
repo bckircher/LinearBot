@@ -197,7 +197,7 @@ public class DriveForDistance extends CommandBase {
     }
 
     // Determine how far the robot is from the target direction.
-    error = m_direction - m_navX.getAngle();
+    error = m_navX.getAngle() - m_direction;
 
     // Compute the rotation that the robot should turn to get back to going
     // the desired direction.
@@ -227,7 +227,7 @@ public class DriveForDistance extends CommandBase {
   public boolean isFinished() {
     if(m_hold ||
        (Math.abs(m_target - m_drive.getPosition()) > m_kError_Position) ||
-       (Math.abs(m_direction - m_navX.getAngle()) > m_kError_Heading)) {
+       (Math.abs(m_navX.getAngle() - m_direction) > m_kError_Heading)) {
       return false;
     }
     return true;

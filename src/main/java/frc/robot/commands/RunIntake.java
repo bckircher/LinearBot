@@ -42,7 +42,7 @@ public class RunIntake extends CommandBase {
    * Intake}subsystem. It takes values from the given DoubleSuppliers
    * (ostensibly analog buttons on a controller) and uses their values to
    * directly control the intake.
-   * 
+   *
    * <p>The intake subsystem is rather unique. Running the motor one direction
    * will pull in cargo (if the robot is not in possession of a game piece) but
    * eject a hatch panel (if the robot is in possession of a hatch panel),

@@ -13,9 +13,9 @@ import frc.robot.utils.Log;
  * This command moves the elevator to a specific height.
  */
 public class ElevatorToHeight extends CommandBase {
-  private static final double m_defaultSpeed = 0.5;
-  private static final double m_kS = 0.1;
-  private static final double m_kP = 0.1;
+  private static final double m_defaultSpeed = 1.0;
+  private static final double m_kS = 0.025;
+  private static final double m_kP = 0.5;
   private static final double m_kError = 0.01;
   private final Elevator m_elevator;
   private final double m_target;
@@ -92,8 +92,12 @@ public class ElevatorToHeight extends CommandBase {
     // Determine how far the elevator is away from the desired height.
     error = m_target - m_elevator.getPosition();
 
+    System.out.print(error + " ");
+
     // Compute the speed that the elevator should move.
-    speed = error * m_kP;
+    error *= 10;
+    speed = error * error * error * m_kP;
+    System.out.println(speed);
 
     // If the speed is not zero but too small, increase it to the minimum (so
     // the elevator has enough power to move).
@@ -110,6 +114,10 @@ public class ElevatorToHeight extends CommandBase {
     }
     if(speed < -m_maxSpeed) {
       speed = -m_maxSpeed;
+    }
+
+    if(Math.abs(error) <= m_kError) {
+      speed = 0;
     }
 
     // Move the elevator at the computed speed.

@@ -22,7 +22,7 @@ public class RunHDrive extends CommandBase {
    */
   private final HDrive m_hDrive;
 
-  /** 
+  /**
    * The DoubleSupplier used to determine the speed to strafe the robot to the
    * left.
    */

@@ -14,6 +14,9 @@ import frc.robot.Constants;
  * utilizing some signal conditioning to clean up the results.
  */
 public final class Controller {
+  /**
+   * The dead-band that is applied to all of the analog controls.
+   */
   private static double m_deadBand = 0;
 
   /**
@@ -31,7 +34,8 @@ public final class Controller {
     if(Math.abs(value) < m_deadBand) {
       return 0;
     } else {
-      return (value - m_deadBand) / (1.0 - m_deadBand);
+      return Math.copySign((Math.abs(value) - m_deadBand) / (1.0 - m_deadBand),
+                           value);
     }
   }
 
@@ -71,7 +75,7 @@ public final class Controller {
 
     // Get the X value of the left stick.
     value = controller.getRawAxis(Constants.Controller.kAnalogLeftX);
-  
+
     // Apply the dead-band to the value and return it.
     return applyDeadBand(value);
   }
