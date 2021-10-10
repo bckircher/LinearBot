@@ -147,6 +147,40 @@ class testElevator {
       }
     }
 
+    for(int i = 0; i < 100; i++) {
+      builder.add(Arguments.of((Math.random() * 2.0) - 1.0,
+                               (Math.random() * 2.0) - 1.0));
+    }
+
+    return builder.build();
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void runVoltage(double left, double right) {
+    Mockito.reset(m_left);
+    Mockito.reset(m_right);
+
+    m_elevator.runVoltage(left, right);
+
+    verify(m_left).setVoltage(left);
+    verify(m_right).setVoltage(right);
+  }
+
+  static Stream<Arguments> runVoltage() {
+    Stream.Builder<Arguments> builder = Stream.builder();
+
+    for(int i = -10; i <= 10; i++) {
+      for(int j = -10; j <= 10; j++) {
+        builder.add(Arguments.of(i / 10.0, j / 10.0));
+      }
+    }
+
+    for(int i = 0; i < 100; i++) {
+      builder.add(Arguments.of((Math.random() * 2.0) - 1.0,
+                               (Math.random() * 2.0) - 1.0));
+    }
+
     return builder.build();
   }
 

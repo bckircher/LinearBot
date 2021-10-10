@@ -286,6 +286,20 @@ public class Elevator extends SubsystemBase {
   }
 
   /**
+   * Directly sets the voltage of the elevator motors.
+   *
+   * @param left the voltage to apply to the left side of the elevator.
+   *             Positive voltage is up.
+   *
+   * @param right the voltage to apply to the right side of the elevator.
+   *              Positive voltage is up.
+   */
+  public void runVoltage(double left, double right) {
+    m_left.setVoltage(left);
+    m_right.setVoltage(right);
+  }
+
+  /**
    * Stops the elevator.
    */
   public void stop() {

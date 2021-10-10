@@ -134,6 +134,16 @@ public class HDrive extends SubsystemBase {
   }
 
   /**
+   * Sets the drive voltage of the H-drive.
+   * 
+   * @param volts the voltage to apply to the H-drive. Positive voltage is to
+   *              the right.
+   */
+  public void runVoltage(double volts) {
+    m_drive.setVoltage(-volts);
+  }
+
+  /**
    * Stops the H-drive.
    */
   public void stop() {

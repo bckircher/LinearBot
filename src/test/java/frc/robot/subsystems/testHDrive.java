@@ -35,7 +35,7 @@ public class testHDrive {
   // A unit test for simple driving of the HDrive.
   @ParameterizedTest
   @MethodSource
-  void drive(double speed) {
+  void run(double speed) {
     // Reset the motor controller mock object.
     Mockito.reset(m_motor);
 
@@ -49,7 +49,42 @@ public class testHDrive {
   }
 
   // Generates a test data set for the simple drive test.
-  static Stream<Arguments> drive() {
+  static Stream<Arguments> run() {
+    // Create a stream builder for storing all the test data sets.
+    Stream.Builder<Arguments> builder = Stream.builder();
+
+    // Loop through the values of the simple drive test.
+    for(int i = -10; i <= 10; i++) {
+      // Add a data set for this value.
+      builder.add(Arguments.of(i / 10.0));
+    }
+
+    // Add a variety of randomized speeds.
+    for(int i = 0; i < 100; i++) {
+      // Add a data set for a random speed.
+      builder.add(Arguments.of((Math.random() * 2) - 1));
+    }
+
+    // Create and return an argument stream of these data sets.
+    return builder.build();
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void runVoltage(double volts) {
+    // Reset the motor controller mock object.
+    Mockito.reset(m_motor);
+
+    // Run the HDrive at the requested voltage.
+    m_hDrive.runVoltage(volts);
+
+    // Verify that the motor controller was set to output the given voltage.
+    // Because of the way the HDrive is mounted, making positive mean right
+    // requires inverting the motor drive.
+    verify(m_motor).setVoltage(-volts);
+  }
+
+  static Stream<Arguments> runVoltage() {
     // Create a stream builder for storing all the test data sets.
     Stream.Builder<Arguments> builder = Stream.builder();
 
