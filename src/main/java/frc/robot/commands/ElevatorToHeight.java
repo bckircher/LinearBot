@@ -7,7 +7,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
-import frc.robot.utils.Log;
 
 /**
  * This command moves the elevator to a specific height.
@@ -81,7 +80,6 @@ public class ElevatorToHeight extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Log.init(this, m_target);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -127,7 +125,6 @@ public class ElevatorToHeight extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Log.end(this, interrupted);
     m_elevator.stop();
   }
 

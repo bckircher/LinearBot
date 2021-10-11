@@ -39,6 +39,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HDrive;
 import frc.robot.subsystems.Intake;
 import frc.robot.utils.Controller;
+import frc.robot.utils.Log;
 import frc.robot.utils.NavX;
 
 /**
@@ -133,6 +134,14 @@ public class RobotContainer {
     // Start streaming the first camera to the driver station.
     m_camera = CameraServer.getInstance().startAutomaticCapture(0);
     m_camera.setResolution(640, 480);
+
+    // Use the scheduler to log the scheduling and execution of commands.
+    CommandScheduler.getInstance().
+      onCommandInitialize(command -> Log.init(command));
+    CommandScheduler.getInstance().
+      onCommandInterrupt(command -> Log.end(command, true));
+    CommandScheduler.getInstance().
+      onCommandFinish(command -> Log.end(command, false));
   }
 
   /**

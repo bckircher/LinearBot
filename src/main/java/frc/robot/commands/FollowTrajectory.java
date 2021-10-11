@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drive;
-import frc.robot.utils.Log;
 
 /**
  * This command drives the robot along a given trajectory.
@@ -68,8 +67,6 @@ public class FollowTrajectory extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Log.init(this);
-
     // Reset the drive odometry to the initial pose of the trajectory.
     m_drive.resetOdometry(m_trajectory.getInitialPose());
 
@@ -85,7 +82,6 @@ public class FollowTrajectory extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Log.end(this, interrupted);
     m_ramsete.end(interrupted);
   }
 

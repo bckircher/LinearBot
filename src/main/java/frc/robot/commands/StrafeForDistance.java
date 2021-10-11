@@ -7,7 +7,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.HDrive;
-import frc.robot.utils.Log;
 
 /**
  * This command strafes the robot a given distance.
@@ -137,8 +136,6 @@ public class StrafeForDistance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Log.init(this, m_distance);
-
     // The robot is not ready to strafe; the wheel must be put onto the ground
     // first.
     m_ready = false;
@@ -206,7 +203,7 @@ public class StrafeForDistance extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Log.end(this, interrupted);
+    m_hDrive.stop();
   }
 
   // Returns true when the command should end.

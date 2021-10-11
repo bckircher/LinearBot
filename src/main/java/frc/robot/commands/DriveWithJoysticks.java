@@ -9,7 +9,6 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
-import frc.robot.utils.Log;
 
 /**
  * This is intended to be used as the default command for the {@link Drive}
@@ -60,7 +59,6 @@ public class DriveWithJoysticks extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Log.init(this);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -72,7 +70,6 @@ public class DriveWithJoysticks extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Log.end(this, interrupted);
     m_drive.stop();
   }
 

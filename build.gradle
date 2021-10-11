@@ -109,6 +109,8 @@ spotless {
             include '**/*.java'
             exclude '**/build/**', '**/build-*/**',
                     '**/DriveCharacterization/**',
+                    '**/ElevatorCharacterization/**',
+                    '**/HDriveCharacterization/**',
                     '**/src/main/java/frc/robot/utils/frc4048/**'
         }
         removeUnusedImports()
